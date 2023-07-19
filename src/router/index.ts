@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { isAuthenicated } from '@/guards/Role'
+import { isAuthenicated, isAdmin } from '@/guards/Roles'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +12,7 @@ const router = createRouter({
       component: HomeView
     },
     {
+      beforeEnter: isAdmin,
       path: '/about',
       name: 'about',
       //beforeEnter,
