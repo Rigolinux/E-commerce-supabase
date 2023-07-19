@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import {handleLogin,handleSignup} from '@/vueutils/UseAuth';
+import {handleLogin, handleSignup} from '@/vueutils/UseAuth';
 import {ref} from 'vue';
 
 const form = ref<Credentials>({email: '', password: ''});
 
 </script>
 <template>
-    <div>
+    <div class="ml-2">
         <h1>Login</h1>
         <form @submit.prevent="handleLogin(form)">
-            <input type="text" v-model="form.email" placeholder="email" />
-            <input type="password" v-model="form.password" placeholder="password" />
-            <button type="submit">Login</button>
+            <v-text-field  v-model="form.email" label="email" variant="underlined" 
+                prepend-icon="mdi-email" type="email"
+            />
+            <v-text-field  variant="underlined" v-model="form.password" label="password"
+                prepend-icon="mdi-lock" type="password"
+            />
+            <v-btn type="submit">Login</v-btn>
         </form>
     </div>
 </template>
