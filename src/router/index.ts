@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { isAuthenicated, isAdmin } from '@/guards/Roles'
+import { isAuthenicated, isAdmin,requierAuth } from '@/guards/Roles'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,9 +22,16 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
+      beforeEnter: requierAuth,
       path: '/login',
       name: 'login',
       component: () => import('@/modules/auth/views/LoginView.vue')
+    },
+    {
+      beforeEnter: requierAuth,
+      path: '/register',
+      name: 'register',
+      component: () => import('@/modules/auth/views/RegisterView.vue')
     }
   ]
 })
