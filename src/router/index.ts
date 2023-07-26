@@ -34,7 +34,7 @@ const router = createRouter({
       component: () => import('@/modules/auth/views/RegisterView.vue')
     },
     {
-      beforeEnter: requierAuth,
+      beforeEnter: isAuthenicated,
       path: '/profile',
       name: 'profile',
       component: () => import('@/modules/profile/views/ProfileView.vue')
