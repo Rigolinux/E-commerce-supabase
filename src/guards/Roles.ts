@@ -41,9 +41,9 @@ export const requierAuth = async(_to:any, _from:any, next:any) => {
     const {data} = await supabase.auth.getUser()
     console.log(data)
     if (data.user) {
-        next('/')
+        next()
     } else if(data.user == null)
     {
-        next()
+        next('/login')
     }
 }
