@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import { supabase } from '@/config/supbaseClient';
 import { ref } from 'vue';
+import {useAuthStore} from '@/stores/AuthStore';
 
 
 
@@ -14,6 +15,9 @@ supabase.auth.onAuthStateChange((_event, session) => {
             
 		})
 
+//move to main when is prepared
+const auth = useAuthStore();
+auth.getRole();
 
 const refresh  = async() =>await supabase.auth.getSession()
 
@@ -32,6 +36,8 @@ const values = ref<any>([]);
   email: 'jbugakykidgeovovdf@cazlp.com',
   password: '1234',
 })
+
+
 </script>
 
 <template>
