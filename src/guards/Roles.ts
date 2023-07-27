@@ -17,7 +17,7 @@ export const isAuthenicated = async(_to:any, _from:any, next:any) => {
 export const isAdmin = async(_to:any, _from:any, next:any) => {
 
 
-    const {data,error} = await supabase.auth.getUser()
+    const {data ,error} = await supabase.auth.getUser()
     
     if(error) {
         console.log(error)
@@ -26,12 +26,13 @@ export const isAdmin = async(_to:any, _from:any, next:any) => {
 
     if(data)
     {
-        const { data, error } = await supabase.rpc('get_claims', {uid:'9cc7c223-752f-4f7d-b3a2-1babb3bc5f5c'});
-        if(error) {
+        const id = data.user?.id
+        const resp = await supabase.rpc('get_claims', {uid: id });
+        if(resp.error) {
             
             next('/login')
         }
-        if(data.Adminlevel)
+        if(resp.data.Adminlevel)
         next()
         else
         next('/login')
