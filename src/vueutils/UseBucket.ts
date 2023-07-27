@@ -19,7 +19,7 @@ async function UploadProfileImg (file: File) {
     }
     const PublicUrl = await GetUrlImage(data.path)
     return PublicUrl
-  } catch (error) {
+  } catch (error: any) {
     alert(error.message)
   }
 }
@@ -35,7 +35,7 @@ async function DeleteProfileImg (filePath: string[]) {
       throw error
     }
     return data
-  } catch (error) {
+  } catch (error: any) {
     alert(error.message)
   }
 }
@@ -48,7 +48,7 @@ async function GetUrlImage(filePath: string) {
       .from('Profile_photos')
       .getPublicUrl(filePath)
     return data
-  } catch (error) {
+  } catch (error: any) {
     alert(error.message)
   }
 }
