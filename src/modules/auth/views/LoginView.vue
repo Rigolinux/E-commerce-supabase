@@ -15,7 +15,10 @@ const form = ref<Credentials>({email: '', password: ''});
             <v-text-field  variant="underlined" v-model="form.password" label="password"
                 prepend-icon="mdi-lock" type="password"
             />
-            <v-btn type="submit">Login</v-btn>
+            <v-btn type="submit">Login
+
+                <v-icon>mdi-abugida-thai</v-icon>
+            </v-btn>
         </form>
     </div>
 </template>

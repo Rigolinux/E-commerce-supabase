@@ -23,41 +23,42 @@ const refresh  = async() =>await supabase.auth.getSession()
 
 const logout = async() =>await supabase.auth.signOut()
 
-const get_my_claims = async () => {
+/* const get_my_claims = async () => {
   console.log('get_my_claims');
     const { data, error } = await supabase
     .rpc('get_claims', {uid:'9cc7c223-752f-4f7d-b3a2-1babb3bc5f5c'});
     values.value = data;
     return { data, error };
   }
-
-const values = ref<any>([]);
+ */
+/* const values = ref<any>([]);
   const login  = async() => await supabase.auth.signInWithPassword({
   email: 'jbugakykidgeovovdf@cazlp.com',
   password: '1234',
 })
-
+ */
 
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <v-row>
+      <v-col cols="12" sm="12" md="6" lg="2">
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+      </v-col>
+    </v-row>
+  
+    
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
+      <!-- <nav>
         <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
         <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-    <div>
-      {{values}}
-    </div>
-    <button @click="get_my_claims()">Get My Claims</button> |
-    <button @click="login()"> login</button> |
-    <button @click="refresh()"> Refresh</button> |
+      </nav> -->
+    
+    
+   
+  <!--   <button @click="login()"> login</button> | -->
+    <!-- <button @click="refresh()"> Refresh</button> | -->
     <button @click="logout()"> logout</button>   
     
   
