@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { isAuthenicated, isAdmin,requierAuth } from '@/guards/Roles'
+import { useRouteStore } from '@/stores/RouteStore';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,13 +23,13 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      // beforeEnter: requierAuth,
+       beforeEnter: requierAuth,
       path: '/login',
       name: 'login',
       component: () => import('@/modules/auth/views/LoginView.vue')
     },
     {
-      // beforeEnter: requierAuth,
+      beforeEnter: requierAuth,
       path: '/register',
       name: 'register',
       component: () => import('@/modules/auth/views/RegisterView.vue')
@@ -42,11 +43,14 @@ const router = createRouter({
     {
       // beforeEnter: requierAuth,
       // beforeEnter: isAuthenicated,
+      
       path: '/reset-password',
       name: 'reset-password',
       component: () => import('@/modules/auth/views/ResetPasswordView.vue'),
 
       beforeEnter: (to, from, next) => {
+        const r = useRouteStore();
+        r.setRemoveNav(true)
         const isAuthenicated = true;
         const showNavbar = false;
 
@@ -57,7 +61,13 @@ const router = createRouter({
         else {
           next({ name: 'login' });
         }
-      }
+      },
+      beforeLeave: ( _to:any, _from:any, next:any) => {
+        const r = useRouteStore();
+        r.setRemoveNav(false)
+        next();
+        // Llama a next() para continuar con la navegación a la siguiente ruta
+      },
 
     },
     {
