@@ -4,6 +4,10 @@ import HelloWorld from './components/HelloWorld.vue'
 import { supabase } from '@/config/supbaseClient';
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useRouteStore } from '@/stores/RouteStore';
+
+const Banner = useRouteStore();
+
 
 import { useRoute } from 'vue-router';
 const route = useRoute();
@@ -42,7 +46,10 @@ auth.getRole();
 
 const refresh  = async() =>await supabase.auth.getSession()
 
-const logout = async() =>await supabase.auth.signOut()
+const logout = async() =>{
+  await supabase.auth.signOut()
+  router.push({ name: 'login' })
+}
 
 /* const get_my_claims = async () => {
   console.log('get_my_claims');
@@ -65,7 +72,7 @@ const logout = async() =>await supabase.auth.signOut()
   
   <!-- NavBar -->
   <!-- <v-toolbar app> -->
-  <v-toolbar app v-if="isAuthenticated && showNavbar && NavigationPath">
+  <v-toolbar app v-if="isAuthenticated && showNavbar && !Banner.removeNav">
     
     <!-- Imagen boton -->
     <router-link to="/">
@@ -87,9 +94,9 @@ const logout = async() =>await supabase.auth.signOut()
       <v-btn variant="text" class="btnclass">Registrarse</v-btn>
     </router-link> -->
 
-    <router-link to="/login">
+    
       <v-btn variant="tonal" class="btnclassLgO" @click="logout()" >LogOut</v-btn>
-    </router-link>
+    
     
   </v-toolbar>
   
