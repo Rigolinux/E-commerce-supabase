@@ -3,17 +3,38 @@ import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import { supabase } from '@/config/supbaseClient';
 import { ref } from 'vue';
-import {useAuthStore} from '@/stores/AuthStore';
+import { useAuthStore } from '@/stores/AuthStore';
+
+import { useRoute } from 'vue-router';
+const route = useRoute();
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const showNavbar = ref(true);
 
 
+console.log(router.currentRoute.value);
 
+const Navegacion = () => {
+  // fullPath: "/reset-password"
+  console.log(router.currentRoute.value.fullPath);
+  console.log(router.currentRoute.value);
 
+  if (router.currentRoute.value.fullPath === '/reset-password') {
+    // showNavbar.value = false;
+    return false;
+  }
+  return true;
+}
 
+const NavigationPath = ref(Navegacion());
+
+const isAuthenticated = ref(false);
 
 supabase.auth.onAuthStateChange((_event, session) => {
-    console.log('onAuthStateChange', session);
-            
-		})
+  console.log('onAuthStateChange', session);
+  isAuthenticated.value = session !== null;
+  showNavbar.value      = isAuthenticated.value && !route.meta.hideNavbar;
+})
 
 //move to main when is prepared
 const auth = useAuthStore();
@@ -41,41 +62,81 @@ const logout = async() =>await supabase.auth.signOut()
 </script>
 
 <template>
-  <header>
-    <v-row>
-      <v-col cols="12" sm="12" md="6" lg="2">
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-      </v-col>
-    </v-row>
   
+  <!-- NavBar -->
+  <!-- <v-toolbar app> -->
+  <v-toolbar app v-if="isAuthenticated && showNavbar && NavigationPath">
     
+    <!-- Imagen boton -->
+    <router-link to="/">
+      <v-btn icon size="60px">
+        <v-icon size="40px">
+          <img alt="Vue logo" src="@/assets/logo.svg" />
+        </v-icon>
+      </v-btn>
+    </router-link>
 
-      <!-- <nav>
-        <RouterLink :to="{ name: 'home' }">Home</RouterLink> |
-        <RouterLink to="/about">About</RouterLink>
-      </nav> -->
+    <v-toolbar-title>E-Commerce</v-toolbar-title>
+    <v-spacer />
     
+    <router-link to="/about">
+      <v-btn variant="text" class="btnclass">About solo prueba del logo</v-btn>
+    </router-link>
+
+    <!-- <router-link to="/register">
+      <v-btn variant="text" class="btnclass">Registrarse</v-btn>
+    </router-link> -->
+
+    <router-link to="/login">
+      <v-btn variant="tonal" class="btnclassLgO" @click="logout()" >LogOut</v-btn>
+    </router-link>
     
-   
-  <!--   <button @click="login()"> login</button> | -->
-    <!-- <button @click="refresh()"> Refresh</button> | -->
-    <button @click="logout()"> logout</button>   
-    
+  </v-toolbar>
   
-  </header>
-
-  <RouterView />
+  <RouterView :showNavbar="showNavbar" />
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
+  /* padding-top: 10px;  Antes 50px */
+  padding-left: 10px;
 }
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnclass {
+  margin-left: 5px;
+  margin-right: 5px;
+  transition: none;
+  color: white;
+  background-color: rgb(79, 103, 241);
+}
+
+.btnclass:hover {
+  transition: none;
+}
+
+.btnclassLgO {
+  margin-left: 5px;
+  margin-right: 5px;
+  transition: none;
+  color: white;
+  background-color: rgb(241, 79, 79);
+}
+
+.btnclassLgO:hover {
+  transition: none;
 }
 
 nav {

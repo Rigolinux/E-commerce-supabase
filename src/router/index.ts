@@ -12,7 +12,7 @@ const router = createRouter({
       component: HomeView
     },
     {
-      beforeEnter: isAdmin,
+      // beforeEnter: isAdmin,
       path: '/about',
       name: 'about',
       //beforeEnter,
@@ -22,16 +22,43 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      beforeEnter: requierAuth,
+      // beforeEnter: requierAuth,
       path: '/login',
       name: 'login',
       component: () => import('@/modules/auth/views/LoginView.vue')
     },
     {
-      beforeEnter: requierAuth,
+      // beforeEnter: requierAuth,
       path: '/register',
       name: 'register',
       component: () => import('@/modules/auth/views/RegisterView.vue')
+    },
+    {
+      beforeEnter: requierAuth,
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import('@/modules/auth/views/ForgotView.vue')
+    },
+    {
+      // beforeEnter: requierAuth,
+      // beforeEnter: isAuthenicated,
+      path: '/reset-password',
+      name: 'reset-password',
+      component: () => import('@/modules/auth/views/ResetPasswordView.vue'),
+
+      beforeEnter: (to, from, next) => {
+        const isAuthenicated = true;
+        const showNavbar = false;
+
+        if (isAuthenicated) {
+          to.meta.showNavbar = showNavbar;
+          next();
+        }
+        else {
+          next({ name: 'login' });
+        }
+      }
+
     },
     {
       beforeEnter: isAuthenicated,

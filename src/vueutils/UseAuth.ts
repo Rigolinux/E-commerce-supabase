@@ -77,6 +77,17 @@ async function handlePasswordReset(email : string) {
   }
 }
 
+async function resetPassword(newPassword : any) {
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) {
+    throw error;
+  }
+}
+
 async function handleUpdateUser(credentials: Credentials) {
   try {
     const { error } = await supabase.auth.update(credentials)
@@ -121,5 +132,7 @@ export {
   handleSignup,
   handleLogout,
   handlePasswordReset,
+  // handleForgotPassword,
+  resetPassword,
   handleUpdateUser,
 }
