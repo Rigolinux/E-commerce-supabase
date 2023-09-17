@@ -93,7 +93,7 @@ export default {
                 </td>
                 <td style="width: 35%;">
                   <div>
-                    <v-text-field v-model="product.cantidad" type="number" min="1"/>
+                    <v-text-field v-model="product.cantidad" type="number" label="Cantidad" variant="underlined" min="1"/>
                   </div>
                 </td>
                 <td class="text-right">
