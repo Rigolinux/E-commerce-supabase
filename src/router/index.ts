@@ -75,6 +75,25 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: () => import('@/modules/profile/views/ProfileView.vue')
+    },
+    // Rutas Necesarias para acceder a Products, ProductDetail, Cart...
+    {
+      beforeEnter: isAuthenicated,
+      path: '/products',
+      name: 'products',
+      component: () => import('@/modules/products/productsView.vue')
+    },
+    {
+      beforeEnter: isAuthenicated,
+      path: '/productDetail/:id_producto',
+      name: 'productDetail',
+      component: () => import('@/modules/products/productDetail.vue')
+    },
+    {
+      beforeEnter: isAuthenicated,
+      path: '/cart',
+      name: 'cart',
+      component: () => import('@/modules/Cart/cartView.vue')
     }
   ]
 })
