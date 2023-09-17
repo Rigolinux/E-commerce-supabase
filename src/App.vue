@@ -86,8 +86,16 @@ const logout = async() =>{
     <v-toolbar-title>E-Commerce</v-toolbar-title>
     <v-spacer />
     
-    <router-link to="/about">
+    <router-link to="/products">
+      <v-btn variant="text" class="btnclass">Products</v-btn>
+    </router-link>
+
+    <!-- <router-link to="/about">
       <v-btn variant="text" class="btnclass">About solo prueba del logo</v-btn>
+    </router-link> -->
+
+    <router-link to="/cart">
+      <v-btn variant="text" class="btnclass">Mi Carretilla</v-btn>
     </router-link>
 
     <!-- <router-link to="/register">
