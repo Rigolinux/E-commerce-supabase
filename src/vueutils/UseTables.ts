@@ -42,6 +42,7 @@ async function GetData(table: string) {
     if (error) {
       throw error
     }
+    console.log(data)
     return data
   } catch (error: any) {
     alert(error.message)

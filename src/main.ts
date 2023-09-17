@@ -5,6 +5,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { EnvConfig } from './config/EnvConfig';
 import { supabase } from './config/supbaseClient';
+import 'devextreme/dist/css/dx.light.css';
 
 import App from './App.vue'
 import router from './router'

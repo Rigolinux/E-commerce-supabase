@@ -29,6 +29,12 @@ const router = createRouter({
       component: () => import('@/modules/auth/views/LoginView.vue')
     },
     {
+    //  beforeEnter: requierAuth,
+     path: '/manage-product',
+     name: 'manage-product',
+     component: () => import('@/modules/products/views/ManageProductView.vue')
+   },
+    {
       beforeEnter: requierAuth,
       path: '/register',
       name: 'register',
