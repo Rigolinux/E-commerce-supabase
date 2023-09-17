@@ -41,8 +41,21 @@ export default {
     },
     // Actualizar la cantidad de un producto en el carrito por su indice en el array
     updateCart(product: any, index: number) {
-      this.cart[index].cantidad = product.cantidad;
-      localStorage.setItem('product-cart', JSON.stringify(this.cart));
+
+      // Validar que la cantidad no sea menor a 1 y que no sea mayor al stock
+      if (product.cantidad > 0) {
+        if (product.cantidad <= product.stock) {
+          alert('Se actualizo la cantidad');
+          this.cart[index].cantidad = product.cantidad;
+          localStorage.setItem('product-cart', JSON.stringify(this.cart));
+        } else {
+          alert('No se puede actualizar la cantidad, no hay suficiente stock');
+          this.cart[index].cantidad = 1;
+        }
+      } else {
+        alert('No se puede actualizar la cantidad a 0');
+        this.cart[index].cantidad = 1;
+      }
     },
     // Metodo de pago por paypal
     paypalPayment() {
@@ -86,10 +99,10 @@ export default {
                 <td class="text-right">
                   <div>
                     <v-btn @click="removeFromCart(index)" class="v-btn-delete">
-                      <v-icon>mdi-delete</v-icon>
+                      <v-icon class="v-btn-delete-icon">mdi-delete</v-icon>
                     </v-btn>
                     <v-btn @click="updateCart(product, index)" class="v-btn-update">
-                      <v-icon>mdi-autorenew</v-icon>
+                      <v-icon class="v-btn-update-icon">mdi-autorenew</v-icon>
                     </v-btn>
                   </div>
                 </td>
@@ -150,12 +163,26 @@ export default {
   /* text-transform: bold; */
 }
 .v-btn-delete {
-  color: red;
   margin: 2px;
+  background-color: white !important;
+}
+.v-btn-delete-icon {
+  color: red !important;
+}
+.v-btn-delete:hover {
+  color: transparent !important;
+  transform: scale(1.15);
 }
 .v-btn-update {
-  color: purple;
   margin: 2px;
+  background-color: white !important;
+}
+.v-btn-update-icon {
+  color: darkblue !important;
+}
+.v-btn-update:hover {
+  color: transparent !important;
+  transform: scale(1.15);
 }
 .div-calTotal {
   color: black;

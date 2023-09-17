@@ -110,7 +110,7 @@ export default {
         <!-- Boton Añadir a carrito -->
         <v-col cols="12" sm="6">
           <div>
-            <v-btn class="mx-auto" @click="addToCart(product)">
+            <v-btn class="mx-auto btnclass-cart" @click="addToCart(product)">
               <v-icon left class="v-icon-buy">mdi-cart-heart</v-icon>
               <span class="v-icon-buy-text">
                 &nbsp; Añadir al carrito
@@ -180,9 +180,13 @@ export default {
 }
 .v-icon-buy-text {
   color: rgb(64, 136, 71);
+  text-transform: none;
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
-  text-transform: none;
+}
+.btnclass-cart:hover {
+  color: transparent !important;
+  transform: scale(1.15);
 }
 .v-icon-det {
   color: rgb(64, 164, 155);

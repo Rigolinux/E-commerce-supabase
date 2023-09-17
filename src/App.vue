@@ -86,16 +86,32 @@ const logout = async() =>{
     <v-toolbar-title>E-Commerce</v-toolbar-title>
     <v-spacer />
     
-    <router-link to="/products">
+    <!-- <router-link to="/products">
       <v-btn variant="text" class="btnclass">Products</v-btn>
+    </router-link> -->
+
+    <router-link to="/products">
+      <v-btn variant="text" class="btnclass">
+        <a class="btnclass-text">
+          Products
+        </a>
+      </v-btn>
     </router-link>
 
     <!-- <router-link to="/about">
       <v-btn variant="text" class="btnclass">About solo prueba del logo</v-btn>
     </router-link> -->
 
-    <router-link to="/cart">
+    <!-- <router-link to="/cart">
       <v-btn variant="text" class="btnclass">Mi Carretilla</v-btn>
+    </router-link> -->
+
+    <router-link to="/cart">
+      <v-btn variant="text" class="btnclass">
+        <a class="btnclass-text">
+          Mi Carretilla
+        </a>
+      </v-btn>
     </router-link>
 
     <!-- <router-link to="/register">
@@ -103,7 +119,15 @@ const logout = async() =>{
     </router-link> -->
 
     
-      <v-btn variant="tonal" class="btnclassLgO" @click="logout()" >LogOut</v-btn>
+    <!-- <v-btn variant="tonal" class="btnclassLgO" @click="logout()" >LogOut</v-btn> -->
+
+    <v-btn variant="tonal" class="btnclass-logout" @click="logout()">
+      <a class="btnclass-logout-text">
+        LogOut
+      </a>
+    </v-btn>
+
+    &nbsp; &nbsp;
     
     
   </v-toolbar>
@@ -120,7 +144,7 @@ header {
 }
 
 .logo {
-  display: block;
+  /* display: block; */
   margin: 0 auto 2rem;
 }
 
@@ -131,27 +155,35 @@ header {
 }
 
 .btnclass {
-  margin-left: 5px;
-  margin-right: 5px;
-  transition: none;
-  color: white;
+  margin-left: 10px;
+  margin-right: 10px;
   background-color: rgb(79, 103, 241);
 }
-
+.btnclass-text {
+  color: white !important;
+  text-transform: none;
+  font-family: 'Roboto', sans-serif;
+  /* font-weight: bold; */
+}
 .btnclass:hover {
-  transition: none;
+  color: transparent !important;
+  transform: scale(1.15);
 }
 
-.btnclassLgO {
-  margin-left: 5px;
-  margin-right: 5px;
-  transition: none;
-  color: white;
+.btnclass-logout {
+  margin-left: 10px;
+  margin-right: 10px;
   background-color: rgb(241, 79, 79);
 }
-
-.btnclassLgO:hover {
-  transition: none;
+.btnclass-logout-text {
+  color: white !important;
+  text-transform: none;
+  font-family: 'Roboto', sans-serif;
+  /* font-weight: bold; */
+}
+.btnclass-logout:hover {
+  color: transparent !important;
+  transform: scale(1.15);
 }
 
 nav {

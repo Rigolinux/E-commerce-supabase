@@ -67,7 +67,9 @@ export default {
                 :disabled="product.stock === 1" 
                 @click="product.stock > 1 ? Detalles(product.id_producto) : null"
               >
+              <a class="stock-available-text">
                 {{ product.stock > 1 ? 'Ver Detalles' : 'No Disponible' }}
+              </a>
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -79,20 +81,31 @@ export default {
 </template>
 
 <style scoped>
+
 .stock-available {
   background-color: green;
-  color: white;
+  width: 150px;
+}
+.stock-available-text {
+  color: white !important;
   text-transform: none;
   font-family: 'Roboto', sans-serif;
+}
+.stock-available:hover {
+  color: transparent !important;
+  transform: scale(1.15);
 }
 .stock-not-available {
   background-color: red;
-  color: white;
+  width: 150px;
+}
+.stock-not-available-text {
+  color: white !important;
   text-transform: none;
   font-family: 'Roboto', sans-serif;
 }
-.v-btn:not(.v-btn--disabled):hover {
-  background-color: inherit !important;
-  color: inherit !important;
+.stock-not-available:hover {
+  color: transparent !important;
+  /* transform: scale(1.15); */
 }
 </style>
