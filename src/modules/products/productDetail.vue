@@ -7,10 +7,10 @@ interface ProductCart {
   nombre:                 string;
   marca:                  string;
   stock:                  number;
-  'Valor total(Precio)':  number;
-  'Precio Unitario':      number;
+  valor_total_precio:     number;
+  precio_unitario:        number;
   costo:                  number;
-  'Costo Unitario':       number;
+  costo_unitario:         number;
   descripcion:            string;
   descuento:              number;
   estado:                 string;
@@ -98,12 +98,16 @@ export default {
           <div class="Subtitle-text-1 price-container">
             <span>
               &nbsp; &nbsp; $
-              {{ 
+              <!-- {{ 
                 Math.floor(product?.['Costo Unitario'])
+              }} -->
+              {{ 
+                Math.floor(product?.costo_unitario)
               }}
             </span>
             <span class="decimal-digits">
-              {{ ' ' + (product?.['Costo Unitario'] % 1).toFixed(2).substring(2) }}
+              <!-- {{ ' ' + (product?.['Costo Unitario'] % 1).toFixed(2).substring(2) }} -->
+              {{ ' ' + (product?.costo_unitario % 1).toFixed(2).substring(2) }}
             </span>
           </div>
         </v-col>

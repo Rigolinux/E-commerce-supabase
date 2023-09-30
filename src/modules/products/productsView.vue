@@ -6,7 +6,7 @@ interface Product {
   nombre: string;
   marca: string;
   stock: number;
-  'Costo Unitario': number;
+  costo_unitario: number;
   descripcion: string;
   imagen: string;
   loading: boolean;
@@ -28,7 +28,7 @@ export default {
     }
   },
 
-  async created() {
+  async mounted() {
     const { data, error } = await supabase.from('productos').select('*');
     if (error) {
       console.error('Error fetching products:', error);
@@ -44,7 +44,7 @@ export default {
   <v-app>
     <v-container fluid>
       <v-row>
-        <v-col cols="12" sm="3" v-for="product in products" :key="product.id_producto" >
+        <v-col cols="12" sm="3" v-for="product in products" :key="product.id_producto" style="padding-top: 50px;">
           <v-card height="350" align="center" flat outlined tile>
             <v-img :src="product.imagen" width="200" height="200" contain></v-img>
             <v-card-text class="mt-n1">
@@ -53,9 +53,9 @@ export default {
               </strong>
             </v-card-text>
             <v-card-text class="mt-n4">
-              <strong>
-                $ {{ product['Costo Unitario'].toFixed(2) }}
-              </strong>
+              <v-text class="h2-precio">
+                $ {{ product.costo_unitario.toFixed(2) }}
+              </v-text>
             </v-card-text>
             <v-card-actions>
               <v-btn 
@@ -81,6 +81,12 @@ export default {
 </template>
 
 <style scoped>
+
+.h2-precio {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  color: #000000;
+}
 
 .stock-available {
   background-color: green;
