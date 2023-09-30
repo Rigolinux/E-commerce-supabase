@@ -2,6 +2,8 @@
 import { InsertData } from '@/vueutils/UseTables';
 import TheWelcome from '../components/TheWelcome.vue'
 
+import ChartViews from '@/modules/Reports/views/ChartsViews.vue'
+
 
 const genPurchase = async() => {
   const products:ProductCart[] =  JSON.parse(localStorage.getItem('product-cart') || '[]');
@@ -64,6 +66,9 @@ const genPurchase = async() => {
     >
       Generate a purcharse
     </v-btn>
-    <TheWelcome />
+    <Suspense>
+
+      <ChartViews />
+    </Suspense>
   </main>
 </template>
