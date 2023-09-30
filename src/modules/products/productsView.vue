@@ -53,10 +53,11 @@ export default {
               </strong>
             </v-card-text>
             <v-card-text class="mt-n4">
-              <v-text class="h2-precio">
+              <div class="h2-precio">
                 $ {{ product.costo_unitario.toFixed(2) }}
-              </v-text>
+              </div>
             </v-card-text>
+          
             <v-card-actions>
               <v-btn 
                 class="mx-auto" 
