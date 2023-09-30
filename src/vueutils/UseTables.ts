@@ -2,7 +2,7 @@ import { supabase } from '@/config/supbaseClient'
 
 async function InsertData(params: object, table: string) {
   try {
-    const { data, error } = await supabase.from(table).insert(params)
+    const { data, error } = await supabase.from(table).insert(params).select()
     if (error) {
       throw error
     }
