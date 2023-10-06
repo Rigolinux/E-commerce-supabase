@@ -40,3 +40,15 @@ declare interface SalesHeader {
     fecha_de_compra?:      string;
     metodo_de_pago:        string;
 }
+
+declare interface User {
+    id_perfil?:             number;
+    foto_de_perfil?:        string;
+    nombre:                string;
+    apellido:              string;
+    email:                 string;
+    fecha_de_nacimiento?:    Date;
+    sexo?:                   string;
+    no_dui:                 number;
+    direccion:              string;
+}
