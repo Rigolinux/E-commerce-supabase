@@ -1,7 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type NavigationGuard, type RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { isAuthenicated, isAdmin,requierAuth } from '@/guards/Roles'
+import { isAuthenicated,requierAuth } from '@/guards/Roles'
 import { useRouteStore } from '@/stores/RouteStore';
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,17 +25,17 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-       beforeEnter: requierAuth,
+      beforeEnter: requierAuth,
       path: '/login',
       name: 'login',
       component: () => import('@/modules/auth/views/LoginView.vue')
     },
     {
-    //  beforeEnter: requierAuth,
-     path: '/manage-product',
-     name: 'manage-product',
-     component: () => import('@/modules/products/views/ManageProductView.vue')
-   },
+      //  beforeEnter: requierAuth,
+      path: '/manage-product',
+      name: 'manage-product',
+      component: () => import('@/modules/products/views/ManageProductView.vue')
+    },
     {
       beforeEnter: requierAuth,
       path: '/register',
@@ -49,14 +51,13 @@ const router = createRouter({
     {
       // beforeEnter: requierAuth,
       // beforeEnter: isAuthenicated,
-      
       path: '/reset-password',
       name: 'reset-password',
       component: () => import('@/modules/auth/views/ResetPasswordView.vue'),
 
-      beforeEnter: (to, from, next) => {
+      beforeEnter: (to:any, from:any, next:any) => {
         const r = useRouteStore();
-        r.setRemoveNav(true)
+        r.setRemoveNav(true);
         const isAuthenicated = true;
         const showNavbar = false;
 
@@ -68,19 +69,24 @@ const router = createRouter({
           next({ name: 'login' });
         }
       },
-      beforeLeave: ( _to:any, _from:any, next:any) => {
+      beforeLeave: (_to: any, _from: any, next: any) => {
         const r = useRouteStore();
-        r.setRemoveNav(false)
+        r.setRemoveNav(false);
         next();
         // Llama a next() para continuar con la navegación a la siguiente ruta
       },
-
     },
     {
       beforeEnter: isAuthenicated,
       path: '/profile',
       name: 'profile',
       component: () => import('@/modules/profile/views/ProfileView.vue')
+    },
+    {
+      beforeEnter: isAuthenicated,
+      path: '/test-upload',
+      name: 'test-upload',
+      component: () => import('@/modules/profile/views/TestUploadView.vue')
     },
     // Rutas Necesarias para acceder a Products, ProductDetail, Cart...
     {
@@ -101,7 +107,7 @@ const router = createRouter({
       name: 'cart',
       component: () => import('@/modules/Cart/cartView.vue')
     }
-  ]
+  ] 
 })
 
 export default router
