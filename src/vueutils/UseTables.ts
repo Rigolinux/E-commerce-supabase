@@ -69,7 +69,7 @@ async function GetDataByParameter(table: string, name: string, value: string) {
     }
     return data
   } catch (error: any) {
-    alert(error.message)
+    console.log(error);
   }
 }
 

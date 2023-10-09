@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { GetDataByParameter,InsertData, UpdateData } from "@/vueutils/UseTables";
+import { supabase } from '@/config/supbaseClient';
 
 export const useUser = () => {
 
@@ -15,13 +16,18 @@ export const useUser = () => {
         direccion: ''
       });
 
-    const GetUser = async (mail:string) => {
+    const GetUser = async () => {
         try {
-            const data: any[] | undefined = await GetDataByParameter('perfiles','email',mail) ;
+            const spdata =  await supabase.auth.getUser()
+            
+            if(!spdata.data.user?.email) return
+
+            const data: any[] | undefined = await GetDataByParameter('perfiles','email',spdata.data.user?.email) ;
             if (data && data.length > 0) {
                 User.value = data[0] as User;
             } else {
-                throw new Error('User not found');
+                User.value.email = spdata.data.user?.email
+               
             }
         } catch (error: any) {
             alert(error.message);

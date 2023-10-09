@@ -5,13 +5,14 @@ import CustomDatePicker from '../components/CustomDatePicker.vue'
 import { ref, type Ref } from 'vue';
 
 
-const comp = useUser();
+
+const { GetUser, User:form } = useUser();
 
 const url = ref<string | null>(null);
 
-const image: Ref<Blob | null> = ref(null);
+const image: Ref<Blob | null | File[]> = ref(null);
 
-
+    GetUser();
 //comp.GetUser('correo@gmail.com');
 
 const PreviewImage = (e:any) => {
@@ -20,7 +21,7 @@ const PreviewImage = (e:any) => {
   url.value = URL.createObjectURL(e.target.files[0]);
 };
 
-const form = useUser().User;
+
 
 
 </script>
@@ -46,7 +47,7 @@ const form = useUser().User;
             </v-col>        <v-file-input
                         @change="PreviewImage"
             accept="image/png, image/jpeg, image/bmp"
-
+            v-model="image"
             placeholder="Pick an avatar"
             prepend-icon="mdi-camera"
             label="Avatar"

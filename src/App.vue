@@ -35,7 +35,7 @@ const NavigationPath = ref(Navegacion());
 const isAuthenticated = ref(false);
 
 supabase.auth.onAuthStateChange((_event, session) => {
-  console.log('onAuthStateChange', session);
+  
   isAuthenticated.value = session !== null;
   showNavbar.value      = isAuthenticated.value && !route.meta.hideNavbar;
 })
