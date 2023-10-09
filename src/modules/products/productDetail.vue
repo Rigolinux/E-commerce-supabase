@@ -73,9 +73,8 @@ export default {
   <!-- <v-container class="bg-surface-variant mb-6"> -->
   <v-container>
     <v-row align="center" no-gutters>
-
-      <v-col cols="12" sm="6">
-        <v-img width="100%" height="100%" :src="product?.imagen" />
+      <v-col cols="12" sm="6" class="image-container">
+        <v-img style="max-width: 75%; max-height: 75%" :src="product?.imagen" />
       </v-col>
       <!-- Informacion -->
       <v-col cols="12" sm="6">
@@ -107,7 +106,7 @@ export default {
             </span>
             <span class="decimal-digits">
               <!-- {{ ' ' + (product?.['Costo Unitario'] % 1).toFixed(2).substring(2) }} -->
-              {{ ' ' + (product?.costo_unitario % 1).toFixed(2).substring(2) }}
+              {{ ' .' + (product?.costo_unitario % 1).toFixed(2).substring(2) }}
             </span>
           </div>
         </v-col>
@@ -155,17 +154,17 @@ export default {
               <span class="Subtitle-text-black">
                 &nbsp; &nbsp; Metodos de pago:
               </span>
-              <br /><br />
+              <br /><br /><br />
               <span style="display: flex;">
                 <v-img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png" 
                   class="d-none d-md-inline" 
-                  width="150px" 
-                  height="60" 
+                  max-width="275px" 
+                  max-height="75px" 
                 />
                 <v-img src="https://bancos.vip/wp-content/uploads/2020/10/filebanco-agricola-sv-png-wikimedia-commons.png" 
                   class="d-inline d-md-none ml-5" 
-                  width="150px" 
-                  height="60px" 
+                  max-width="275px" 
+                  max-height="75px" 
                 />
               </span>
             </v-col>
@@ -227,5 +226,10 @@ export default {
 .decimal-digits {
   font-size: 18px;
   vertical-align: super;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
