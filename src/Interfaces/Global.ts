@@ -44,11 +44,11 @@ declare interface SalesHeader {
 declare interface User {
     id_perfil?:             number;
     foto_de_perfil?:        string;
-    nombre:                string;
-    apellido:              string;
-    email:                 string;
+    nombre?:                string;
+    apellido?:              string;
+    email?:                 string;
     fecha_de_nacimiento?:    Date;
     sexo?:                   string;
-    no_dui:                 number;
-    direccion:              string;
+    no_dui?:                 number;
+    direccion?:              string;
 }

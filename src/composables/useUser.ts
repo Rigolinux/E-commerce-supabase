@@ -3,7 +3,17 @@ import { GetDataByParameter,InsertData, UpdateData } from "@/vueutils/UseTables"
 
 export const useUser = () => {
 
-    const User = ref<User>();
+    const User = ref<User>({
+        id_perfil: 0,
+        foto_de_perfil: '',
+        nombre: '',
+        apellido: '',
+        email: '',
+        fecha_de_nacimiento: new Date(),
+        sexo: '',
+        no_dui: 0,
+        direccion: ''
+      });
 
     const GetUser = async (mail:string) => {
         try {

@@ -6,7 +6,7 @@ import { createPinia } from 'pinia'
 import { EnvConfig } from './config/EnvConfig';
 import { supabase } from './config/supbaseClient';
 import 'devextreme/dist/css/dx.light.css';
-
+import 'vuetify/styles';
 import App from './App.vue'
 import router from './router'
 
@@ -31,5 +31,9 @@ app.config.globalProperties.$supabase = supabase
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
+
+app.config.compilerOptions.isCustomElement = (tag) => {
+  return tag.startsWith('rb-') // (return true)
+}
 
 app.mount('#app')
