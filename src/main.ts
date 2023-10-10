@@ -8,7 +8,8 @@ import { supabase } from './config/supbaseClient';
 import 'devextreme/dist/css/dx.light.css';
 import 'vuetify/styles';
 import App from './App.vue'
-import router from './router'
+import router from './router';
+import { es } from 'vuetify/locale'
 
 
 import { createVuetify } from 'vuetify'
@@ -21,6 +22,13 @@ const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi', 
   },
+  locale: {
+    locale: 'es',
+    messages: {
+      es,
+    }
+  },
+  
 })
 
 

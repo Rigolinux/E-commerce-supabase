@@ -47,8 +47,9 @@ declare interface User {
     nombre?:                string;
     apellido?:              string;
     email?:                 string;
-    fecha_de_nacimiento?:    Date;
+    fecha_de_nacimiento?:    string;
     sexo?:                   string;
     no_dui?:                 number;
     direccion?:              string;
+    telefono?:                number;
 }
