@@ -12,9 +12,9 @@ async function InsertData(params: object, table: string) {
   }
 }
 
-async function UpdateData(params: object, table: string, id: string | number) {
+async function UpdateData(params: object, table: string, id: string | number, column: string = 'id') {
   try {
-    const { data, error } = await supabase.from(table).update(params).match({ id: id })
+    const { data, error } = await supabase.from(table).update(params).match({ [column]: id })
     if (error) {
       throw error
     }

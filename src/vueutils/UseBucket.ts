@@ -9,7 +9,7 @@ async function UploadProfileImg (file: File) {
       const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`
       const filePath = `public/${fileName}`
     const { data, error } = await supabase.storage
-      .from('Profile_photos')
+      .from('profile_photos')
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
@@ -18,7 +18,7 @@ async function UploadProfileImg (file: File) {
       throw error
     }
     const PublicUrl = await GetUrlImage(data.path)
-    return PublicUrl
+    return PublicUrl?.publicUrl
   } catch (error: any) {
     alert(error.message)
   }
