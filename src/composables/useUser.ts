@@ -1,19 +1,22 @@
 import { ref } from 'vue';
 import { GetDataByParameter,InsertData, UpdateData } from "@/vueutils/UseTables";
 import { supabase } from '@/config/supbaseClient';
+import { formatDate } from '@/helpers/getFormatdate';
+
+
 
 export const useUser = () => {
 
-    const User = ref<User>({
-        id_perfil: 0,
+    const User = ref<User>({ 
         foto_de_perfil: '',
         nombre: '',
         apellido: '',
         email: '',
-        fecha_de_nacimiento: new Date(),
+        
         sexo: '',
         no_dui: 0,
-        direccion: ''
+        direccion: '',
+        telefono: 0,
       });
 
     const GetUser = async () => {
@@ -27,6 +30,8 @@ export const useUser = () => {
                 User.value = data[0] as User;
             } else {
                 User.value.email = spdata.data.user?.email
+                User.value.fecha_de_nacimiento = formatDate(new Date())
+                console.log(User.value)
                
             }
         } catch (error: any) {

@@ -29,7 +29,7 @@ async function DeleteProfileImg (filePath: string[]) {
     // rename file for random name
      
     const { data, error } = await supabase.storage
-      .from('Profile_photos')
+      .from('profile_photos')
       .remove(filePath)
     if (error) {
       throw error
@@ -45,7 +45,7 @@ async function GetUrlImage(filePath: string) {
     // rename file for random name
      
     const { data } = await supabase.storage
-      .from('Profile_photos')
+      .from('profile_photos')
       .getPublicUrl(filePath)
     return data
   } catch (error: any) {
