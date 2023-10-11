@@ -52,4 +52,5 @@ declare interface User {
     no_dui?:                 number;
     direccion?:              string;
     telefono?:                number;
+
 }
