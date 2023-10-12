@@ -106,6 +106,13 @@ const router = createRouter({
       path: '/cart',
       name: 'cart',
       component: () => import('@/modules/Cart/cartView.vue')
+    },
+    // Agregando Producto
+    {
+      beforeEnter: isAuthenicated,
+      path: '/addProduct',
+      name: 'addProduct',
+      component: () => import('@/modules/products/addProductsView.vue')
     }
   ] 
 })
