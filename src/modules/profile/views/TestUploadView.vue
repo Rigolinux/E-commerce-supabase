@@ -4,9 +4,9 @@ import { UploadProfileImg } from '@/vueutils/UseBucket';
 
 const handleUpload = async (e: any) => {
     const file = e.target.files[0];
-    const url = await UploadProfileImg(file);
+   // const url = await UploadProfileImg(file);
     //this path is be returned and must be saved in the database in a new table called user profile
-    console.log(url);
+    //console.log(url);
 };
 
 </script>

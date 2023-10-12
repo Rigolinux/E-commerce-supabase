@@ -69,12 +69,12 @@ const router = createRouter({
           next({ name: 'login' });
         }
       },
-      beforeLeave: (_to: any, _from: any, next: any) => {
+      /* beforeLeave: (_to: any, _from: any, next: any) => {
         const r = useRouteStore();
         r.setRemoveNav(false);
         next();
         // Llama a next() para continuar con la navegación a la siguiente ruta
-      },
+      }, */
     },
     {
       beforeEnter: isAuthenicated,

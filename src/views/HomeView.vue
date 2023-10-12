@@ -66,9 +66,9 @@ const genPurchase = async() => {
     >
       Generate a purcharse
     </v-btn>
-    <Suspense>
+
 
       <ChartViews />
-    </Suspense>
+   
   </main>
 </template>

@@ -13,7 +13,7 @@ const { GetUser, User:form } = useUser();
 
 const url = ref<string | null>(null);
 
-const image: Ref<Blob | null | File[]> = ref(null);
+const image: Ref<Blob | null | File[] | any > = ref(null);
 
     GetUser();
 
@@ -50,7 +50,7 @@ const UpdateValues = async() => {
 }
 
 const showDatepicker = ref(false);
-const date = ref(new Date());
+const date:Ref<Date | any>  = ref(new Date());
 
 const changueDate = () => {
     console.log(date.value);

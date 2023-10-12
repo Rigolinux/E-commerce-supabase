@@ -5,7 +5,7 @@ import { ref } from 'vue';
 
 let products = ref([]);
 
-GetProducts().then((data) => {
+GetProducts().then((data:any) => {
   products.value = data;
 });
 
