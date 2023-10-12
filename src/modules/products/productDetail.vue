@@ -2,20 +2,20 @@
 import { supabase } from '../../config/supbaseClient';
 
 interface ProductCart {
-  id_producto:            number;
-  id_categoria:           number;
-  nombre:                 string;
-  marca:                  string;
-  stock:                  number;
-  valor_total_precio:     number;
-  precio_unitario:        number;
-  costo:                  number;
-  costo_unitario:         number;
-  descripcion:            string;
-  descuento:              number;
-  estado:                 string;
-  imagen:                 string;
-  cantidad:               number;
+  id_producto:          number;
+  id_categoria:         number;
+  nombre:               string;
+  marca:                string;
+  stock:                number;
+  valor_total_precio:   number;
+  precio_unitario:      number;
+  costo:                number;
+  valor_stock_promedio: number;
+  descripcion:          string;
+  descuento:            number;
+  estado:               string;
+  imagen:               string;
+  loading:              boolean;
 }
 
 export default {
@@ -101,12 +101,19 @@ export default {
                 Math.floor(product?.['Costo Unitario'])
               }} -->
               {{ 
-                Math.floor(product?.costo_unitario)
+                Math.floor(product?.valor_total_precio)
               }}
             </span>
             <span class="decimal-digits">
               <!-- {{ ' ' + (product?.['Costo Unitario'] % 1).toFixed(2).substring(2) }} -->
-              {{ ' .' + (product?.costo_unitario % 1).toFixed(2).substring(2) }}
+              {{ '.' + (product?.valor_total_precio % 1).toFixed(2).substring(2) }}
+            </span>
+            &nbsp; &nbsp; &nbsp; &nbsp; 
+            <span class="normal-price-text">
+              {{ 'Precio típico: ' }}
+            </span>
+            <span class="normal-price">
+              {{ '$ ' + product?.precio_unitario.toFixed(2)}}
             </span>
           </div>
         </v-col>
@@ -145,7 +152,7 @@ export default {
             <v-col cols="12">
               <v-icon left class="v-icon-det">mdi-star-three-points</v-icon>
               <span class="Subtitle-text-black">
-                &nbsp; &nbsp; Estado: {{ product?.estado }}
+                &nbsp; &nbsp; Estado: {{ product?.estado == true ? 'Disponible' : 'No disponible' }}
               </span>
             </v-col>
             <!-- Metodos de pago -->
@@ -157,15 +164,26 @@ export default {
               <br /><br /><br />
               <span style="display: flex;">
                 <v-img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png" 
-                  class="d-none d-md-inline" 
-                  max-width="275px" 
-                  max-height="75px" 
+                  class="d-none d-md-inline d-inline" 
+                  width="150px" 
+                  height="60" 
                 />
+                &nbsp;
                 <v-img src="https://bancos.vip/wp-content/uploads/2020/10/filebanco-agricola-sv-png-wikimedia-commons.png" 
+                  class="d-none d-md-inline d-inline d-md-none" 
+                  width="150px" 
+                  height="60px" 
+                />
+                <!-- <v-img src="https://bancos.vip/wp-content/uploads/2020/10/filebanco-agricola-sv-png-wikimedia-commons.png" 
                   class="d-inline d-md-none ml-5" 
                   max-width="275px" 
                   max-height="75px" 
-                />
+                /> -->
+                <!-- <v-img src="https://bancos.vip/wp-content/uploads/2020/10/filebanco-agricola-sv-png-wikimedia-commons.png" 
+                  class="d-inline d-md-none ml-5" 
+                  max-width="275px" 
+                  max-height="75px" 
+                /> -->
               </span>
             </v-col>
         </v-col>
@@ -226,6 +244,18 @@ export default {
 .decimal-digits {
   font-size: 18px;
   vertical-align: super;
+}
+.normal-price-text {
+  /* color: gray; */
+  /* text-decoration: line-through; */
+  font-size: 18px;
+  /* vertical-align: super; */
+}
+.normal-price {
+  color: gray;
+  text-decoration: line-through;
+  font-size: 18px;
+  /* vertical-align: super; */
 }
 .image-container {
   display: flex;

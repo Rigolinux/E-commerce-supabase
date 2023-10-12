@@ -2,14 +2,20 @@
 import { supabase } from '../../config/supbaseClient';
 
 interface Product {
-  id_producto: number;
-  nombre: string;
-  marca: string;
-  stock: number;
-  costo_unitario: number;
-  descripcion: string;
-  imagen: string;
-  loading: boolean;
+  id_producto:          number;
+  id_categoria:         number;
+  nombre:               string;
+  marca:                string;
+  stock:                number;
+  valor_total_precio:   number;
+  precio_unitario:      number;
+  costo:                number;
+  valor_stock_promedio: number;
+  descripcion:          string;
+  descuento:            number;
+  estado:               string;
+  imagen:               string;
+  loading:              boolean;
 }
 
 export default {
@@ -54,7 +60,7 @@ export default {
             </v-card-text>
             <v-card-text class="mt-n4">
               <div class="h2-precio">
-                $ {{ product.costo_unitario.toFixed(2) }}
+                $ {{ product.valor_total_precio.toFixed(2) }}
               </div>
             </v-card-text>
           
