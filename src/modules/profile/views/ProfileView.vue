@@ -13,10 +13,10 @@ const { GetUser, User:form } = useUser();
 
 const url = ref<string | null>(null);
 
-const image: Ref<Blob | null | File[]> = ref(null);
+const image: Ref<Blob | null | File[] | any > = ref(null);
 
     GetUser();
-//comp.GetUser('correo@gmail.com');
+
 
 const PreviewImage = (e:any) => {
     console.log(e.target.files[0]);
@@ -28,7 +28,7 @@ const UpdateValues = async() => {
     
     let url = null;
     if(image.value){
-         url = await UploadProfileImg(image.value);
+         url = await UploadProfileImg(image.value, 'profile_photos');
     }
     
 
@@ -50,7 +50,7 @@ const UpdateValues = async() => {
 }
 
 const showDatepicker = ref(false);
-const date = ref(new Date());
+const date:Ref<Date | any>  = ref(new Date());
 
 const changueDate = () => {
     console.log(date.value);
@@ -70,7 +70,7 @@ const changueDate = () => {
             @click.prevent="UpdateValues"
             >
                 <a class="btnclass-text">
-                Mi Carretilla
+                Actualizar
                 </a>
             </v-btn>
         </v-col>
@@ -162,8 +162,16 @@ const changueDate = () => {
                         <v-text-field
                             v-model="form.telefono"
                             label="Telefono"
+                            type="number"
                         />
                     </v-col>
+                <v-col cols="12" md="6" xl="6">
+                        <v-text-field
+                            v-model="form.no_dui"
+                            label="Dui"
+                            type="number"
+                        />
+                </v-col>
                    
             </v-row>
         </v-col>
@@ -208,7 +216,7 @@ const changueDate = () => {
 .btnclass {
   margin-left: 10px;
   margin-right: 10px;
-  background-color: rgb(79, 103, 241);
+  background-color: rgb(57, 203, 44);
   
 }
 

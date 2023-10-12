@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { DxChart, DxSeries } from 'devextreme-vue/chart';
-
+import  type { Ref } from 'vue';
+import { ref } from 'vue';
 import { GetData } from '@/vueutils/UseTables';
 
-const data:ProductCart = await GetData('detalle_venta');
+const data: Ref<ProductCart | any | [] > = ref([]);
+
+GetData('detalle_venta').then((data:any) => {
+  data.value = data;
+});
 
 </script>
 

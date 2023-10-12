@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { supabase } from '@/config/supbaseClient';
-import type { Session, Provider } from '@supabase/gotrue-js/dist/main/lib/types'
+import type { Session } from '@supabase/gotrue-js/dist/main/lib/types'
 
 const userSession = ref<Session | null>(null)
 
@@ -11,8 +11,8 @@ const userSession = ref<Session | null>(null)
 async function handleLogin(credentials: Credentials) {
   try {
     const { error, data } = await supabase.auth.signInWithPassword({
-      email: credentials.email,
-      password: credentials.password,
+      email: credentials.email!,
+      password: credentials.password!,
     })
     if (error) {
       alert('Error logging in: ' + error.message)
@@ -21,7 +21,7 @@ async function handleLogin(credentials: Credentials) {
     if (!error && !data) {
       alert('Check your email for the login link!')
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error thrown:', error.message)
     alert(error.error_description || error)
   }
@@ -51,14 +51,8 @@ async function handleSignup(credentials: Credentials) {
   }
 }
 
-/**
- * Handles signup via Third Party Login.
- * https://supabase.com/docs/guides/auth#third-party-logins
- */
-async function handleOAuthLogin(provider: Provider) {
-  const { error } = await supabase.auth.signIn({ provider })
-  if (error) console.error('Error: ', error.message)
-}
+
+
 
 /**
  * Handles password reset. Will send an email to the given email address.
@@ -88,19 +82,7 @@ async function resetPassword(newPassword : any) {
   }
 }
 
-async function handleUpdateUser(credentials: Credentials) {
-  try {
-    const { error } = await supabase.auth.update(credentials)
-    if (error) {
-      alert('Error updating user info: ' + error.message)
-    } else {
-      alert('Successfully updated user info!')
-      window.location.href = '/'
-    }
-  } catch (error: any) {
-    alert('Error updating user info: ' + error.message)
-  }
-}
+
 
 /**
  * Handles logging a user out of a supabase session
@@ -128,11 +110,11 @@ async function handleLogout() {
 export {
   userSession,
   handleLogin,
-  handleOAuthLogin,
+ 
   handleSignup,
   handleLogout,
   handlePasswordReset,
   // handleForgotPassword,
   resetPassword,
-  handleUpdateUser,
+ 
 }
