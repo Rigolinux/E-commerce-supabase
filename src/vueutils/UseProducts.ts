@@ -1,4 +1,4 @@
-import {GetData} from './UseTables';
+import { GetData } from './UseTablesProducts';
 
 
 async function GetProducts() {

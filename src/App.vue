@@ -89,6 +89,14 @@ const logout = async() =>{
     <!-- <router-link to="/products">
       <v-btn variant="text" class="btnclass">Products</v-btn>
     </router-link> -->
+    
+    <router-link to="/listproducts">
+      <v-btn variant="text" class="btnclass">
+        <a class="btnclass-text">
+          List Products
+        </a>
+      </v-btn>
+    </router-link>
 
     <router-link to="/products">
       <v-btn variant="text" class="btnclass">
@@ -97,6 +105,7 @@ const logout = async() =>{
         </a>
       </v-btn>
     </router-link>
+
 
     <!-- <router-link to="/about">
       <v-btn variant="text" class="btnclass">About solo prueba del logo</v-btn>

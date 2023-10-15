@@ -107,13 +107,27 @@ const router = createRouter({
       name: 'cart',
       component: () => import('@/modules/Cart/cartView.vue')
     },
+    // NUEVAS RUTAS
+    {
+      beforeEnter: isAuthenicated,
+      path: '/listproducts',
+      name: 'listProducts',
+      component: () => import('@/modules/products/listProductsView.vue')
+    },
     // Agregando Producto
     {
       beforeEnter: isAuthenicated,
-      path: '/addProduct',
+      path: '/addproduct',
       name: 'addProduct',
       component: () => import('@/modules/products/addProductsView.vue')
-    }
+    },
+    // Editar Producto
+    {
+      beforeEnter: isAuthenicated,
+      path: '/updateproduct/:id_producto',
+      name: 'editProduct',
+      component: () => import('@/modules/products/updProductsView.vue')
+    },
   ] 
 })
 
