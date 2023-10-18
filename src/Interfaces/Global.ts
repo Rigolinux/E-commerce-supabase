@@ -79,4 +79,4 @@ declare interface ProductCartView {
     estado:                 string;
     imagen:                 string;
     cantidad:               number;
-  }
+}

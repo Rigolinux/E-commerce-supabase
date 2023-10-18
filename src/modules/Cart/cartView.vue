@@ -1,21 +1,7 @@
 <script lang="ts">
+import axios from 'axios';
+import { supabase } from '@/config/supbaseClient';
 
-interface ProductCartView {
-  id_producto:            number;
-  id_categoria:           number;
-  nombre:                 string;
-  marca:                  string;
-  stock:                  number;
-  valor_total_precio:     number;
-  precio_unitario:        number;
-  costo:                  number;
-  costo_unitario:         number;
-  descripcion:            string;
-  descuento:              number;
-  estado:                 string;
-  imagen:                 string;
-  cantidad:               number;
-}
 
 export default {
   data() {
@@ -30,6 +16,11 @@ export default {
       this.cart = JSON.parse(datacart);
     }
   },
+  computed: {
+    total():number {
+      return this.calculateSubTotal() - this.calculateDiscount();
+    },
+  },
   methods: {
     calculateSubTotal() {
       return this.cart.reduce((total, item) => total + item.precio_unitario * item.cantidad, 0);
@@ -37,9 +28,7 @@ export default {
     calculateDiscount() {
       return this.cart.reduce((total, item) => total + item.descuento * item.cantidad, 0);
     },
-    calculateTotal() {
-      
-    },
+    
     // Eliminar un producto del carrito por su indice en el array
     removeFromCart(index: number) {
       this.cart.splice(index, 1);
@@ -51,7 +40,7 @@ export default {
       // Validar que la cantidad no sea menor a 1 y que no sea mayor al stock
       if (product.cantidad > 0) {
         if (product.cantidad <= product.stock) {
-          alert('Se actualizo la cantidad');
+          
           this.cart[index].cantidad = product.cantidad;
           localStorage.setItem('product-cart', JSON.stringify(this.cart));
         } else {
@@ -64,14 +53,42 @@ export default {
       }
     },
     // Metodo de pago por paypal
-    paypalPayment() {
+    async  paypalPayment() {
       console.log('paypalPayment');
       console.log('this.cart:', this.cart);
     },
     // Metodo de pago por wompy
-    wompyPayment() {
+    async  wompyPayment() {
       console.log('wompyPayment');
       console.log('this.cart:', this.cart);
+      try {
+        const {data: {session} } = await supabase.auth.getSession();
+        console.log('token:', session?.access_token);
+        
+        // axios request
+        const config = {
+          method: 'post',
+          url: 'http://localhost:3000/api/wompy/sendtobill',
+          // token
+          headers: { 
+            'Authorization': `Bearer ${session?.access_token}`, 
+            'Content-Type': 'application/json'
+          },
+          data : {
+            monto : this.total,
+          }
+        
+        }
+
+      
+
+        const response = await axios(config);
+        console.log('response:', response.data);
+
+      } catch (error) {
+        console.log('error:', error);
+        
+      }
     },
   },
 };
@@ -123,7 +140,7 @@ export default {
                 </td>
                 <td style="width: 35%;">
                   <div>
-                    <v-text-field v-model="product.cantidad" type="number" label="Cantidad" variant="underlined" min="1" />
+                    <v-text-field @input="updateCart(product, index)"  v-model="product.cantidad" type="number" label="Cantidad" variant="underlined" min="1" />
                   </div>
                 </td>
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -163,7 +180,7 @@ export default {
               <v-icon left>mdi-paypal</v-icon>
               Pagar con PayPal
             </v-btn>
-            <v-btn @click="paypalPayment" dark block class="v-btn-wompy">
+            <v-btn @click="wompyPayment" dark block class="v-btn-wompy">
               <v-icon left>mdi-paypal</v-icon>
               Pagar con Wompy
             </v-btn>
