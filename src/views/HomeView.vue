@@ -21,8 +21,7 @@ const genPurchase = async() => {
     total:                sum,
     descuento:             0,
     id_perfil:             1,
-    direccion:             'Calle 1',
-    telefono:              '1234567890',
+
     estado:                'Completo',
     referencia:            'trs 1',
     metodo_de_pago:        'Efectivo',

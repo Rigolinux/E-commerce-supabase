@@ -78,6 +78,12 @@ const router = createRouter({
     },
     {
       beforeEnter: isAuthenicated,
+      path: '/proccess-order',
+      name: 'proccessOrder',
+      component: () => import('@/modules/transactions/views/ProccessOrder.vue')
+    },
+    {
+      beforeEnter: isAuthenicated,
       path: '/profile',
       name: 'profile',
       component: () => import('@/modules/profile/views/ProfileView.vue')
