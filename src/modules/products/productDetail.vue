@@ -1,22 +1,8 @@
 <script lang="ts">
 import { supabase } from '../../config/supbaseClient';
-
-interface ProductCart {
-  id_producto:          number;
-  id_categoria:         number;
-  nombre:               string;
-  marca:                string;
-  stock:                number;
-  valor_total_precio:   number;
-  precio_unitario:      number;
-  costo:                number;
-  valor_stock_promedio: number;
-  descripcion:          string;
-  descuento:            number;
-  estado:               string;
-  imagen:               string;
-  loading:              boolean;
-}
+// import { ProductCart } from '@/Interfaces/Global'
+import router from '../../router';
+type Product = any;
 
 export default {
   data() {
@@ -24,7 +10,7 @@ export default {
       product: null as any,
       productId: null,
       // LocalStorage
-      cart: [] as ProductCart[],
+      cart: [] as Product[],
     }
   },
   created() {
@@ -58,11 +44,28 @@ export default {
       }
     },
     // Usando localStorage para guardar en consola el producto seleccionado
-    addToCart(product: ProductCart) {
-      // Asignamos un valor de 1 a la cantidad de productos
-      this.product.cantidad = 1;
-      this.cart.push(product);
-      localStorage.setItem("product-cart", JSON.stringify(this.cart));
+    addToCart(product: Product) {
+      // Validamos si el estado del producto es false
+      if(product.estado == false && product.stock == 0) {
+        alert('El producto no está disponible o tiene poco inventario');
+        return;
+      } else {
+        // Verificamos si el producto ya existe en el carrito
+        const exists = this.cart.find(item => item.id_producto === product.id_producto);
+        if(exists) {
+          alert('Este producto ya existe en su carrito de compras');
+          return;
+        } else {
+          alert('Producto añadido al carrito');
+          this.product.cantidad = 1;
+          this.cart.push(product);
+          localStorage.setItem("product-cart", JSON.stringify(this.cart));
+          
+          router.push({
+            path: '/cart',
+          });
+        }
+      }
     },
   }
 }
@@ -96,21 +99,21 @@ export default {
         <v-col cols="12" sm="6">
           <div class="Subtitle-text-1 price-container">
             <span>
-              &nbsp; &nbsp; $
-              <!-- {{ 
-                Math.floor(product?.['Costo Unitario'])
-              }} -->
+              &nbsp; &nbsp; $ 
               {{ 
                 Math.floor(product?.valor_total_precio)
               }}
             </span>
             <span class="decimal-digits">
-              <!-- {{ ' ' + (product?.['Costo Unitario'] % 1).toFixed(2).substring(2) }} -->
               {{ '.' + (product?.valor_total_precio % 1).toFixed(2).substring(2) }}
             </span>
-            &nbsp; &nbsp; &nbsp; &nbsp; 
+          </div>
+        </v-col>
+        <!-- Precio normal o tipico-->
+        <v-col cols="12" sm="6">
+          <div>
             <span class="normal-price-text">
-              {{ 'Precio típico: ' }}
+              {{ 'Precio normal: ' }}
             </span>
             <span class="normal-price">
               {{ '$ ' + product?.precio_unitario.toFixed(2)}}
@@ -174,16 +177,6 @@ export default {
                   width="150px" 
                   height="60px" 
                 />
-                <!-- <v-img src="https://bancos.vip/wp-content/uploads/2020/10/filebanco-agricola-sv-png-wikimedia-commons.png" 
-                  class="d-inline d-md-none ml-5" 
-                  max-width="275px" 
-                  max-height="75px" 
-                /> -->
-                <!-- <v-img src="https://bancos.vip/wp-content/uploads/2020/10/filebanco-agricola-sv-png-wikimedia-commons.png" 
-                  class="d-inline d-md-none ml-5" 
-                  max-width="275px" 
-                  max-height="75px" 
-                /> -->
               </span>
             </v-col>
         </v-col>
@@ -248,13 +241,13 @@ export default {
 .normal-price-text {
   /* color: gray; */
   /* text-decoration: line-through; */
-  font-size: 18px;
+  font-size: 14px;
   /* vertical-align: super; */
 }
 .normal-price {
   color: gray;
   text-decoration: line-through;
-  font-size: 18px;
+  font-size: 14px;
   /* vertical-align: super; */
 }
 .image-container {

@@ -1,27 +1,11 @@
 <script lang="ts">
 import { supabase } from '../../config/supbaseClient';
-
-interface Product {
-  id_producto:          number;
-  id_categoria:         number;
-  nombre:               string;
-  marca:                string;
-  stock:                number;
-  valor_total_precio:   number;
-  precio_unitario:      number;
-  costo:                number;
-  valor_stock_promedio: number;
-  descripcion:          string;
-  descuento:            number;
-  estado:               string;
-  imagen:               string;
-  loading:              boolean;
-}
+type Product = any;
 
 export default {
   data: () => ({
     products: [] as Product[],
-    loading: false,
+    // loading: false,
     selection: 1,
   }),
   methods: {
@@ -39,7 +23,8 @@ export default {
     if (error) {
       console.error('Error fetching products:', error);
     } else {
-      this.products = data.map(product => ({ ...product, loading: false }));
+      // this.products = data.map(product => ({ ...product, loading: false }));
+      this.products = data.map(product => ({ ...product }));
       console.log('Products:', data);
     }
   },

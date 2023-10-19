@@ -2,44 +2,36 @@ import { InsertData, GetDataById  } from "@/vueutils/UseTablesProducts";
 import { supabase } from "@/config/supbaseClient";
 import { ref } from 'vue';
 
-interface Product {
-  id_categoria: number;
-  nombre: string;
-  marca: string;
-  stock: number;
-  valor_total_precio: number;
-  precio_unitario: number;
-  costo: number;
-  // costo_unitario: number;
-  valor_stock_promedio: number;
-  descripcion: string;
-  descuento: number;
-  estado: boolean;
-  imagen: string;
-  // cantidad: number;
-  // ganancia: number;
-}
-
 export const useProducts = () => {
-
   // Variable momentaria para ganancia
   const ganancia = 0;
 
-  const Product = ref<Product>({
+  const Product = ref<AddProductAndUpdate>({
+    id_categoria:           1,
     nombre:                 '',
-    descripcion:            '',
     marca:                  '',
     stock:                  0,
-    costo:                  0,
-    descuento:              0,
-    id_categoria:           1,
-    estado:                 true,
     valor_total_precio:     0,
     precio_unitario:        0,
+    costo:                  0,
     valor_stock_promedio:   0,
+    descripcion:            '',
+    descuento:              0,
+    estado:                 true,
     imagen:                 '',
-    // ganancia:               0,
   });
+  // nombre:                 '',
+  // descripcion:            '',
+  // marca:                  '',
+  // stock:                  0,
+  // costo:                  0,
+  // descuento:              0,
+  // id_categoria:           1,
+  // estado:                 true,
+  // valor_total_precio:     0,
+  // precio_unitario:        0,
+  // valor_stock_promedio:   0,
+  // imagen:                 '',
 
   // Funcion para leer los datos de la tabla productos
   const GetProducts = async () => {
@@ -89,32 +81,6 @@ export const useProducts = () => {
     }
   }
 
-  // Funcion para actualizar datos en la tabla productos
-  // const UpdateProduct = async (product: Product) => {
-  //   try {
-  //     if (!product.id_categoria) {
-  //       throw new Error('Product not found');
-  //     }
-  //     const data = await supabase.from('productos').update({
-  //       id_categoria:           product.id_categoria,
-  //       nombre:                 product.nombre,
-  //       marca:                  product.marca,
-  //       descripcion:            product.descripcion,
-  //       estado:                 product.estado,
-  //       imagen:                 product.imagen,
-  //       stock:                  product.stock,
-  //       costo:                  product.costo,
-  //       descuento:              product.descuento,
-  //       valor_total_precio:     product.valor_total_precio,
-  //       precio_unitario:        product.precio_unitario,
-  //       valor_stock_promedio:   product.valor_stock_promedio,
-  //     }).match({ id_producto: product.id_producto })
-  //     return data
-  //   } catch (error: any) {
-  //     alert(error.message)
-  //   }
-  // }
-
   return { 
     // Variables
     Product,
@@ -124,7 +90,6 @@ export const useProducts = () => {
     GetProducts,
     GetProductById,
     InsertProduct,
-    // UpdateProduct,
 
   }
 }

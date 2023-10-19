@@ -32,7 +32,6 @@ async function GetDataById(table: string, id: string | number, column: string = 
 async function InsertData(params: object, table: string) {
   try {
     const { data, error } = await supabase.from(table).insert(params).select()
-
     if (error) {
       throw error
     }
@@ -67,19 +66,6 @@ async function DeleteData(table: string, id: string | number, column: string = '
     alert(error.message)
   }
 }
-
-// async function DeleteData(table: string, id: string) {
-//   try {
-//     const { data, error } = await supabase.from(table).delete().match({ id: id })
-//     if (error) {
-//       throw error
-//     }
-//     return data
-//   } catch (error: any) {
-//     alert(error.message)
-//   }
-// }
-
 
 export { 
   GetData,

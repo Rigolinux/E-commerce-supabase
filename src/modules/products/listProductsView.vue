@@ -1,26 +1,16 @@
 <script setup lang="ts">
 import {
   DxDataGrid,
-  DxColumn,
-  DxRequiredRule,
-  DxColumnChooser,
   DxColumnFixing,
-  DxFilterRow,
   DxSearchPanel,
-  DxGroupPanel,
   DxSelection,
-  DxSummary,
-  DxGroupItem,
   DxEditing,
-  DxGrouping,
   DxToolbar,
   DxItem,
-  DxMasterDetail,
   DxExport,
   DxPaging
 } from 'devextreme-vue/data-grid';
-import { DxButton } from 'devextreme-vue/button';
-import { GetProducts } from '@/vueutils/UseProducts';
+import { GetProducts } from '../../vueutils/UseProducts';
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
@@ -64,11 +54,6 @@ const CreateProduct = () => {
 
 const UpdateProduct = (id: number) => {
   // Redirreccionando a la vista de actualizar productos
-  // console.log(id);
-  // router.push({
-  //   path: `/updateproduct/${id}}`,
-  //   query: { id: id }
-  // })
   console.log(id);
   router.push({
     name: 'editProduct',
@@ -89,70 +74,77 @@ const DeleteProduct = async(id: number) => {
 </script>
 
 <template>
-  <h1>Lista de productos</h1>
-  <div class="d-flex justify-center align-center">
-    <DxDataGrid 
-      id="dataGrid"
-      :data-source="products"
-      :key-expr="'id_producto'"
-      :allow-column-resizing="true"
-      :column-auto-width="true"
-      :allow-column-reordering="true"
-      :width="'90%'"
-      
-      :show-borders="true"
-      @exporting="onExporting"
-      
-      @row-removed="DeleteProduct($event.data.id_producto)"
+  <br>
+  <v-container>
+    <span class="v-span-title">Lista de productos:</span>
+    <br /><br />
 
+    <div class="d-flex justify-center align-center">
+      <DxDataGrid 
+        id="dataGrid"
+        :data-source="products"
+        :key-expr="'id_producto'"
+        :allow-column-resizing="true"
+        :column-auto-width="true"
+        :allow-column-reordering="true"
+        :width="'90%'"  
+        :show-borders="true"
+        @exporting="onExporting"   
+        @row-removed="DeleteProduct($event.data.id_producto)"
+        @editing-start="UpdateProduct($event.data.id_producto)"
+      >
+  
+      <DxSelection mode="multiple" />
+      <DxColumnFixing :enabled="true" />
+      <DxSearchPanel :visible="true" />
       
-
-      @editing-start="UpdateProduct($event.data.id_producto)"
-    >
-
-    <DxSelection mode="multiple" />
-    <DxColumnFixing :enabled="true" />
-    <DxSearchPanel :visible="true" />
-    
-    <DxEditing
-      mode="popup"
-        :allow-updating="true"
-        :allow-adding="true"
-        :allow-deleting="true"
-    />
-    
-    <DxToolbar>
-      <DxItem>
-        <template #default>
-          <button 
-            @click="CreateProduct()" 
-            class="custom-button"
-          >
-            <i class="dx-icon-add"></i>&nbsp; Crear Nuevo
-          </button>
-        </template>
-      </DxItem>
-      
-      <DxItem name="exportButton" />
-      <DxItem name="columnChooserButton" />
-      <DxItem name="searchPanel" />
-    </DxToolbar>
-    
-    <DxExport
-      :enabled="true"
-      :allow-export-selected-data="true"
-    />
-    
-    <DxPaging 
-      :enabled= "true" 
-      :pageSize="6"
+      <DxEditing
+        mode="popup"
+          :allow-updating="true"
+          :allow-adding="true"
+          :allow-deleting="true"
       />
-
-    </DxDataGrid>
-  </div>
+      
+      <DxToolbar>
+        <DxItem>
+          <template #default>
+            <button 
+              @click="CreateProduct()" 
+              class="custom-button"
+            >
+              <i class="dx-icon-add"></i>&nbsp; Crear Nuevo
+            </button>
+          </template>
+        </DxItem>
+        
+        <DxItem name="exportButton" />
+        <DxItem name="columnChooserButton" />
+        <DxItem name="searchPanel" />
+      </DxToolbar>
+      
+      <DxExport
+        :enabled="true"
+        :allow-export-selected-data="true"
+      />
+      
+      <DxPaging 
+        :enabled= "true" 
+        :pageSize="6"
+        />
+  
+      </DxDataGrid>
+    </div>
+  </v-container>
 </template>
 
 <style scoped>
+.v-span-title {
+  color: black;
+  font-family: 'Roboto', sans-serif;
+  font-size: 32px;
+  text-transform: none;
+  font-weight: bold;
+}
 .employee-photo {
   height: 140px;
   float: left;

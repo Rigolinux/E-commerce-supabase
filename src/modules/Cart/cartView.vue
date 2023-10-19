@@ -1,7 +1,8 @@
 <script lang="ts">
 import axios from 'axios';
-import { supabase } from '@/config/supbaseClient';
-
+// import { supabase } from '@/config/supbaseClient';
+import { supabase } from '../../config/supbaseClient';
+type ProductCartView = any;
 
 export default {
   data() {
@@ -54,11 +55,15 @@ export default {
     },
     // Metodo de pago por paypal
     async  paypalPayment() {
+      // Alerta momentania la cual se cambiara en un futuro por una se sweet alert
+      alert('Se le redirigirá a la página de PayPal para realizar el pago');
       console.log('paypalPayment');
       console.log('this.cart:', this.cart);
     },
     // Metodo de pago por wompy
     async  wompyPayment() {
+      // Alerta momentania la cual se cambiara en un futuro por una se sweet alert
+      alert('Se le redirigirá a la página de PayPal para realizar el pago');
       console.log('wompyPayment');
       console.log('this.cart:', this.cart);
       try {

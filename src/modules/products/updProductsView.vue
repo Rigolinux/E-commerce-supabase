@@ -1,27 +1,25 @@
 <script setup lang="ts">
 import useProducts from '../../composables/useProducts';
-import { UpdateData } from '../../vueutils/UseTablesProducts'; // Importar función de actualización
-import { UploadProductImg, UpdateProductImg } from '../../vueutils/UseBucketProducts';
+import { UpdateData } from '../../vueutils/UseTablesProducts';
+import { UpdateProductImg } from '../../vueutils/UseBucketProducts';
 import { onMounted, ref } from 'vue';
 import router from '../../router';
 
 const { Product: form, GetProductById } = useProducts();
-const url = ref<string | null>(null);
-const image = ref<Blob | null | File[] | any >(null);
+
+const url                       = ref<string | null>(null);
+const image                     = ref<Blob | null | File[] | any >(null);
+const gananciaform              = ref<number>(0);
+const oldStockRef               = ref<number>(0);
+const oldValorStockPromedioRef  = ref<number>(0);
 
 // Preview de la imagen
 const PreviewImage = (e:any) => {
-    image.value = e.target.files[0];
-    url.value = URL.createObjectURL(e.target.files[0]);
+  image.value = e.target.files[0];
+  url.value = URL.createObjectURL(e.target.files[0]);
 };
 
-const gananciaform = ref<number>(0);
-
-const oldStockRef = ref<number>(0);
-const oldValorStockPromedioRef = ref<number>(0);
-
 // Cargar el producto cuando se monta el componente
-// Asumiendo que recibes el ID del producto como un parámetro en la URL
 const productId = ref(router.currentRoute.value.params.id_producto as any);
 console.log('LA ID QUE LLEGO: ' + productId.value);
 
@@ -56,14 +54,6 @@ const UpdProduct = async() => {
     form.value.imagen = newImagenUrl;
   }
 
-  // let uploadedUrl = null;
-  // if (image.value) {
-  //   uploadedUrl = await UploadProductImg(image.value, 'products_photos');
-  // }
-  // if (uploadedUrl) {
-  //   form.value.imagen = uploadedUrl;
-  // }
-
   const costo                       = form.value.costo;
   const costoMod                    = parseFloat(costo.toString());
   const gananciaMod                 = parseFloat(gananciaform.value.toString());
@@ -88,7 +78,7 @@ const UpdProduct = async() => {
 
   await UpdateData(form.value, 'productos', productIDFINAL);
 
-  // alert('Producto actualizado correctamente');
+  alert('Producto actualizado correctamente');
   
   router.push({
     path: '/listproducts',
