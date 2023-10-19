@@ -59,6 +59,34 @@ export default {
       alert('Se le redirigirá a la página de PayPal para realizar el pago');
       console.log('paypalPayment');
       console.log('this.cart:', this.cart);
+      try {
+        const {data: {session} } = await supabase.auth.getSession();
+        console.log('token:', session?.access_token);
+        
+        // axios request
+        const config = {
+          method: 'post',
+          url: 'http://localhost:3000/api/paypal/sendtobill',
+          // token
+          headers: { 
+            'Authorization': `Bearer ${session?.access_token}`, 
+            'Content-Type': 'application/json'
+          },
+          data : {
+            monto : this.total,
+          }
+        
+        }
+
+      
+
+        const response = await axios(config);
+        console.log('response:', response.data);
+
+      } catch (error) {
+        console.log('error:', error);
+        
+      }
     },
     // Metodo de pago por wompy
     async  wompyPayment() {

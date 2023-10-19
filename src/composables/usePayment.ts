@@ -26,7 +26,7 @@ export const UsePayment = () => {
             //update cart with user data
             
 
-            let refernces;
+            let refernces: any = "";
 
             if(params.type === 'Wompy'){
                 refernces = {
@@ -37,7 +37,11 @@ export const UsePayment = () => {
                 refernces = JSON.stringify(refernces);
             }
             else if (params.type === 'Paypal'){
-                refernces = params.referencia;
+                refernces = {
+                    token: params.token,
+                    PayerID: params.PayerID,
+                }
+                refernces = JSON.stringify(refernces);
             }
 
             const salesheader: SalesHeader = {

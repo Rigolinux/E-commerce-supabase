@@ -12,7 +12,7 @@ import {
 } from 'devextreme-vue/data-grid';
 import { GetProducts } from '../../vueutils/UseProducts';
 import { Workbook } from 'exceljs';
-import saveAs from 'file-saver';
+import * as saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
 
 import { DeleteData } from '../../vueutils/UseTablesProducts';
@@ -38,7 +38,7 @@ const onExporting = (e: any) => {
     autoFilterEnabled: true
   }).then(() => {
     workbook.xlsx.writeBuffer().then((buffer: any) => {
-      saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Lista_de_Productos.xlsx');
+      saveAs.default(new Blob([buffer], { type: 'application/octet-stream' }), 'Lista_de_Productos.xlsx');
     });
   });
 
