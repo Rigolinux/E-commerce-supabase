@@ -1,6 +1,7 @@
 <script lang="ts">
 import axios from 'axios';
 // import { supabase } from '@/config/supbaseClient';
+import { EnvConfig } from '@/config/EnvConfig';
 import { supabase } from '../../config/supbaseClient';
 type ProductCartView = any;
 
@@ -66,7 +67,7 @@ export default {
         // axios request
         const config = {
           method: 'post',
-          url: 'http://localhost:3000/api/paypal/sendtobill',
+          url: EnvConfig.SUPABASE_URL + '/paypal/sendtobill',
           // token
           headers: { 
             'Authorization': `Bearer ${session?.access_token}`, 
@@ -101,7 +102,7 @@ export default {
         // axios request
         const config = {
           method: 'post',
-          url: 'http://localhost:3000/api/wompy/sendtobill',
+          url: EnvConfig.SUPABASE_URL + '/wompy/sendtobill',
           // token
           headers: { 
             'Authorization': `Bearer ${session?.access_token}`, 
