@@ -67,7 +67,7 @@ export default {
         // axios request
         const config = {
           method: 'post',
-          url: EnvConfig.SUPABASE_URL + '/paypal/sendtobill',
+          url: EnvConfig.PAYMENTS_API_URL + '/paypal/sendtobill',
           // token
           headers: { 
             'Authorization': `Bearer ${session?.access_token}`, 
@@ -102,7 +102,7 @@ export default {
         // axios request
         const config = {
           method: 'post',
-          url: EnvConfig.SUPABASE_URL + '/wompy/sendtobill',
+          url: EnvConfig.PAYMENTS_API_URL + '/wompy/sendtobill',
           // token
           headers: { 
             'Authorization': `Bearer ${session?.access_token}`, 
