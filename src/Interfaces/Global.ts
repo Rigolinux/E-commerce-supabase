@@ -120,9 +120,10 @@ declare interface AddProductAndUpdate {
 
 // Interfaz para la vista categoriesView, categoryDetail
 declare interface Categories {
-    id_categoria:          number;
+    id_categoria:           number;
     nombre:                 string;
     descripcion:            string;
+    imagen:                 string;
 }
 
 // Interfaz para la vista addCategory y updateCategory
@@ -130,6 +131,14 @@ declare interface AddCategoryAndUpdate {
     id_categoria?:          number;
     nombre:                 string;
     descripcion:            string;
+    imagen:                 string;
+}
+
+declare interface ZZZ {
+    id_categoria:           number | undefined | null;
+    nombre:                 string;
+    descripcion:            string;
+    imagen:                 string;
 }
 
 // declare interface ProductCart {

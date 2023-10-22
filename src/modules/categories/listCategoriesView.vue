@@ -8,26 +8,32 @@ import {
   DxToolbar,
   DxItem,
   DxExport,
-  DxPaging
+  DxPaging,
+  // DxSorting,
+  // DxColumn
 } from 'devextreme-vue/data-grid';
-import { GetProducts } from '../../vueutils/UseProducts';
+
+import { GetCategories } from '../../vueutils/useCategories';
 import { Workbook } from 'exceljs';
 // import * as saveAs from 'file-saver';
 import { saveAs } from 'file-saver';
-
 import { exportDataGrid } from 'devextreme/excel_exporter';
 
-import { DeleteData } from '../../vueutils/UseTablesProducts';
+import { 
+  // DeleteData, 
+  DeleteDataAndProducts 
+} from '../../vueutils/UseTablesCategories';
 
 import { ref } from 'vue';
 import router from '../../router';
 
-let products = ref([]);
 
-GetProducts().then((data:any) => {
-  data.sort((a:any, b:any) => a.id_producto - b.id_producto);
-  products.value = data;
-  console.log(products.value);
+let category = ref([]);
+
+GetCategories().then((data:any) => {
+  data.sort((a:any, b:any) => a.id_categoria - b.id_categoria);
+  category.value = data;
+  console.log(category.value);
 });
 
 // Exportar a excel unicamente
@@ -41,63 +47,81 @@ const onExporting = (e: any) => {
     autoFilterEnabled: true
   }).then(() => {
     workbook.xlsx.writeBuffer().then((buffer: any) => {
-      // saveAs.default(new Blob([buffer], { type: 'application/octet-stream' }), 'Lista_de_Productos.xlsx');
-      saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Lista_de_Productos.xlsx');
+      // saveAs.default(new Blob([buffer], { type: 'application/octet-stream' }), 'Lista_de_Categorias.xlsx');
+      saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Lista_de_Categorias.xlsx');
     });
   });
 
   e.cancel = true;
 }
 
-const CreateProduct = () => {
-  // Redirreccionando a la vista de creación de productos
+// Crear una nueva categoria
+const CreateCategory = () => {
   router.push({
-    path: '/addproduct',
+    path: '/addCategory'
   })
 }
 
-const UpdateProduct = (id: number) => {
-  // Redirreccionando a la vista de actualizar productos
+// Editar/Actualizar una categoria
+const UpdateCategory = (id: number) => {
+  // Redireccionar a la ruta de editar categoria
   console.log(id);
   router.push({
-    name: 'editProduct',
-    params: { id_producto: id }
+    name: 'updateCategory',
+    params: { id_categoria: id }
+  });
+  // router.push({
+    // path: '/updateCategory',
+    // query: { id: id }
+  // })
+}
+
+// Eliminar una categoria
+// const DeleteCategory = (id: number) => {
+//   console.log(id);
+  // DeleteData(id);
+// }
+
+// Eliminar una categoria y sus productos
+const DeleteCategoryAndProducts = async(id: number) => {
+  console.log(id);
+  await DeleteDataAndProducts('categorias', id, 'id_categoria');
+  alert('Se ha eliminado la categoria y sus productos');
+
+  GetCategories().then((data:any) => {
+    category.value = data;
+    console.log(category.value);
   });
 }
 
-const DeleteProduct = async(id: number) => {
-  console.log(id);
-  await DeleteData('productos', id, 'id_producto');
-  alert('Producto eliminado correctamente');
-  GetProducts().then((data:any) => {
-    products.value = data;
-    console.log(products.value);
-  });
-}
+
 
 </script>
 
 <template>
   <br>
   <v-container>
-    <span class="v-span-title">Lista de productos:</span>
+    <span class="v-span-title">Lista de categorías:</span>
     <br /><br />
 
     <div class="d-flex justify-center align-center">
       <DxDataGrid 
         id="dataGrid"
-        :data-source="products"
-        :key-expr="'id_producto'"
+        :data-source="category"
+        :key-expr="'id_categoria'"
         :allow-column-resizing="true"
         :column-auto-width="true"
         :allow-column-reordering="true"
         :width="'90%'"  
         :show-borders="true"
-        @exporting="onExporting"   
-        @row-removed="DeleteProduct($event.data.id_producto)"
-        @editing-start="UpdateProduct($event.data.id_producto)"
+        @exporting="onExporting"
+
+        @row-removed="DeleteCategoryAndProducts($event.data.id_categoria)"
+
+        @editing-start="UpdateCategory($event.data.id_categoria)"
       >
-  
+      <!-- @row-removed="DeleteCategory($event.data.id_categoria)" -->
+
       <DxSelection mode="multiple" />
       <DxColumnFixing :enabled="true" />
       <DxSearchPanel :visible="true" />
@@ -113,7 +137,7 @@ const DeleteProduct = async(id: number) => {
         <DxItem>
           <template #default>
             <button 
-              @click="CreateProduct()" 
+              @click="CreateCategory()" 
               class="custom-button"
             >
               <i class="dx-icon-add"></i>&nbsp; Crear Nuevo
@@ -134,8 +158,14 @@ const DeleteProduct = async(id: number) => {
       <DxPaging 
         :enabled= "true" 
         :pageSize="6"
-        />
-  
+      />
+      
+      <!-- <DxSorting mode="multiple" />
+      <DxColumn
+        data-field="id_categoria"
+        sortOrder="asc"
+      /> -->
+
       </DxDataGrid>
     </div>
   </v-container>

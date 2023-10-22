@@ -5,6 +5,36 @@ import { UpdateProductImg } from '../../vueutils/UseBucketProducts';
 import { onMounted, ref } from 'vue';
 import router from '../../router';
 
+// ==================== NUEVO ====================
+
+import { GetIdAndName } from '../../vueutils/useCategories';
+
+let selectedValue2 = ref<number>(0);
+const categoryIDandName = ref<{ id: number; name: string}[]>([]);
+
+const getSelectedValue2 = () => {
+  console.log('selectedValue2: ', selectedValue2.value);
+}
+
+const fetchData = async () => {
+  const data2 = await GetIdAndName();
+
+  data2.sort((a:any, b:any) => a.id_categoria - b.id_categoria);
+
+  categoryIDandName.value = data2.map((item:any) => {
+    return {
+      id: item.id_categoria,
+      name: item.nombre
+    }
+  });
+
+  console.log('Resultado: ', categoryIDandName.value);
+}
+
+fetchData();
+
+// ===============================================
+
 const { Product: form, GetProductById } = useProducts();
 
 const url                       = ref<string | null>(null);
@@ -30,6 +60,7 @@ const fetchProduct = async() => {
   const productData = await GetProductById(productId.value);
   if (productData && productData[0]) {
     form.value = productData[0];
+    selectedValue2.value = productData[0].id_categoria;
     gananciaform.value = productData[0].precio_unitario - productData[0].costo;
 
     // Guardar los valores antiguos para hacer los cálculos en UpdateProduct
@@ -73,6 +104,8 @@ const UpdProduct = async() => {
   form.value.valor_total_precio     = valorTotalPrecio;
   form.value.precio_unitario        = precioUnitario;
   form.value.valor_stock_promedio   = valorStockPromedioFinal;
+
+  form.value.id_categoria           = selectedValue2.value;
 
   console.log(form.value);
 
@@ -145,7 +178,7 @@ const cancelBtn = () => {
 
           <v-text-field v-model="form.descuento" label="Descuento" prefix="$" outlined full-width></v-text-field>
 
-          <v-select
+          <!-- <v-select
             :items="[
               1, 2, 3
             ]"
@@ -153,7 +186,15 @@ const cancelBtn = () => {
             v-model="form.id_categoria" 
             outlined
             full-width
-          ></v-select>
+          ></v-select> -->
+
+          <select v-model="selectedValue2" class="select_category" @change="getSelectedValue2">
+            <option v-for="item in categoryIDandName" :key="item.id" :value="item.id" class="option_category">
+              {{ `${item.name}` }}
+            </option>
+          </select>
+
+
 
           <v-switch
             v-model="form.estado"
