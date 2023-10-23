@@ -1,7 +1,9 @@
 <script lang="ts">
 import axios from 'axios';
-import { supabase } from '@/config/supbaseClient';
-
+// import { supabase } from '@/config/supbaseClient';
+import { EnvConfig } from '@/config/EnvConfig';
+import { supabase } from '../../config/supbaseClient';
+type ProductCartView = any;
 
 export default {
   data() {
@@ -54,6 +56,8 @@ export default {
     },
     // Metodo de pago por paypal
     async  paypalPayment() {
+      // Alerta momentania la cual se cambiara en un futuro por una se sweet alert
+      alert('Se le redirigirá a la página de PayPal para realizar el pago');
       console.log('paypalPayment');
       console.log('this.cart:', this.cart);
       try {
@@ -63,7 +67,7 @@ export default {
         // axios request
         const config = {
           method: 'post',
-          url: 'http://localhost:3000/api/paypal/sendtobill',
+          url: EnvConfig.PAYMENTS_API_URL + '/paypal/sendtobill',
           // token
           headers: { 
             'Authorization': `Bearer ${session?.access_token}`, 
@@ -77,9 +81,11 @@ export default {
 
       
 
-        const response = await axios(config);
-        console.log('response:', response.data);
+        const {data} = await axios(config);
 
+    
+        window.open(data.message.links[1].href, '_blank');
+        
       } catch (error) {
         console.log('error:', error);
         
@@ -87,6 +93,8 @@ export default {
     },
     // Metodo de pago por wompy
     async  wompyPayment() {
+      // Alerta momentania la cual se cambiara en un futuro por una se sweet alert
+      alert('Se le redirigirá a la página de PayPal para realizar el pago');
       console.log('wompyPayment');
       console.log('this.cart:', this.cart);
       try {
@@ -96,7 +104,7 @@ export default {
         // axios request
         const config = {
           method: 'post',
-          url: 'http://localhost:3000/api/wompy/sendtobill',
+          url: EnvConfig.PAYMENTS_API_URL + '/wompy/sendtobill',
           // token
           headers: { 
             'Authorization': `Bearer ${session?.access_token}`, 
@@ -111,6 +119,7 @@ export default {
       
 
         const response = await axios(config);
+        window.open(response.data.urlEnlace, '_blank');
         console.log('response:', response.data);
 
       } catch (error) {

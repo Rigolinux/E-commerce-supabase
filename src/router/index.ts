@@ -134,6 +134,50 @@ const router = createRouter({
       name: 'editProduct',
       component: () => import('@/modules/products/updProductsView.vue')
     },
+    // Rutas para categorias
+
+    // Vista de categorias
+    {
+      beforeEnter: isAuthenicated,
+      path: '/categories',
+      name: 'categories',
+      component: () => import('@/modules/categories/categoriesView.vue')
+    },
+    // Vista de productos por id de categoria
+    {
+      beforeEnter: isAuthenicated,
+      path: '/productsByCategory/:id_categoria',
+      name: 'productsByCategory',
+      component: () => import('@/modules/products/productsByCategory.vue')
+    },
+    // Vista administrador de categorias
+    {
+      beforeEnter: isAuthenicated,
+      path: '/listcategories',
+      name: 'listCategories',
+      component: () => import('@/modules/categories/listCategoriesView.vue')
+    },
+    // Ruta para agregar categoria
+    {
+      beforeEnter: isAuthenicated,
+      path: '/addCategory',
+      name: 'addCategory',
+      component: () => import('@/modules/categories/addCategoriesView.vue')
+    },
+    // Ruta para editar categoria
+    {
+      beforeEnter: isAuthenicated,
+      path: '/updateCategory/:id_categoria',
+      name: 'updateCategory',
+      component: () => import('@/modules/categories/updCategoriesView.vue')
+    },
+    // Ruta para editar categoria
+    {
+      beforeEnter: isAuthenicated,
+      path: '/zzz',
+      name: 'ZZZ',
+      component: () => import('@/modules/categories/textZZZ.vue')
+    },
   ] 
 })
 

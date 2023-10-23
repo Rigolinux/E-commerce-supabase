@@ -78,7 +78,7 @@ export const UsePayment = () => {
                 salesDetail.push(newObj);
             });
 
-            //!aqui descontar promedio de stock
+            //!aqui descontar promedio de stock - DENTRO DE LA FUNCION
             cart = cart.map ((item: ProductCartView) => {
                 item.stock = item.stock - item.cantidad;
 

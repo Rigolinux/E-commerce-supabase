@@ -1,27 +1,55 @@
 <script setup lang="ts">
 import useProducts from '../../composables/useProducts';
-import { UpdateData } from '../../vueutils/UseTablesProducts'; // Importar función de actualización
-import { UploadProductImg, UpdateProductImg } from '../../vueutils/UseBucketProducts';
+import { UpdateData } from '../../vueutils/UseTablesProducts';
+import { UpdateProductImg } from '../../vueutils/UseBucketProducts';
 import { onMounted, ref } from 'vue';
 import router from '../../router';
 
+// ==================== NUEVO ====================
+
+import { GetIdAndName } from '../../vueutils/useCategories';
+
+let selectedValue2 = ref<number>(0);
+const categoryIDandName = ref<{ id: number; name: string}[]>([]);
+
+const getSelectedValue2 = () => {
+  console.log('selectedValue2: ', selectedValue2.value);
+}
+
+const fetchData = async () => {
+  const data2 = await GetIdAndName();
+
+  data2.sort((a:any, b:any) => a.id_categoria - b.id_categoria);
+
+  categoryIDandName.value = data2.map((item:any) => {
+    return {
+      id: item.id_categoria,
+      name: item.nombre
+    }
+  });
+
+  console.log('Resultado: ', categoryIDandName.value);
+}
+
+fetchData();
+
+// ===============================================
+
 const { Product: form, GetProductById } = useProducts();
-const url = ref<string | null>(null);
-const image = ref<Blob | null | File[] | any >(null);
+
+const url                       = ref<string | null>(null);
+const image                     = ref<Blob | null | File[] | any >(null);
+const gananciaform              = ref<number>(0);
+const oldStockRef               = ref<number>(0);
+const oldValorStockPromedioRef  = ref<number>(0);
 
 // Preview de la imagen
 const PreviewImage = (e:any) => {
-    image.value = e.target.files[0];
-    url.value = URL.createObjectURL(e.target.files[0]);
+  image.value = e.target.files[0];
+  url.value = URL.createObjectURL(e.target.files[0]);
 };
 
-const gananciaform = ref<number>(0);
-
-const oldStockRef = ref<number>(0);
-const oldValorStockPromedioRef = ref<number>(0);
-
 // Cargar el producto cuando se monta el componente
-// Asumiendo que recibes el ID del producto como un parámetro en la URL
 const productId = ref(router.currentRoute.value.params.id_producto as any);
 console.log('LA ID QUE LLEGO: ' + productId.value);
 
@@ -32,6 +60,7 @@ const fetchProduct = async() => {
   const productData = await GetProductById(productId.value);
   if (productData && productData[0]) {
     form.value = productData[0];
+    selectedValue2.value = productData[0].id_categoria;
     gananciaform.value = productData[0].precio_unitario - productData[0].costo;
 
     // Guardar los valores antiguos para hacer los cálculos en UpdateProduct
@@ -56,14 +85,6 @@ const UpdProduct = async() => {
     form.value.imagen = newImagenUrl;
   }
 
-  // let uploadedUrl = null;
-  // if (image.value) {
-  //   uploadedUrl = await UploadProductImg(image.value, 'products_photos');
-  // }
-  // if (uploadedUrl) {
-  //   form.value.imagen = uploadedUrl;
-  // }
-
   const costo                       = form.value.costo;
   const costoMod                    = parseFloat(costo.toString());
   const gananciaMod                 = parseFloat(gananciaform.value.toString());
@@ -84,11 +105,13 @@ const UpdProduct = async() => {
   form.value.precio_unitario        = precioUnitario;
   form.value.valor_stock_promedio   = valorStockPromedioFinal;
 
+  form.value.id_categoria           = selectedValue2.value;
+
   console.log(form.value);
 
   await UpdateData(form.value, 'productos', productIDFINAL);
 
-  // alert('Producto actualizado correctamente');
+  alert('Producto actualizado correctamente');
   
   router.push({
     path: '/listproducts',
@@ -155,7 +178,7 @@ const cancelBtn = () => {
 
           <v-text-field v-model="form.descuento" label="Descuento" prefix="$" outlined full-width></v-text-field>
 
-          <v-select
+          <!-- <v-select
             :items="[
               1, 2, 3
             ]"
@@ -163,7 +186,15 @@ const cancelBtn = () => {
             v-model="form.id_categoria" 
             outlined
             full-width
-          ></v-select>
+          ></v-select> -->
+
+          <select v-model="selectedValue2" class="select_category" @change="getSelectedValue2">
+            <option v-for="item in categoryIDandName" :key="item.id" :value="item.id" class="option_category">
+              {{ `${item.name}` }}
+            </option>
+          </select>
+
+
 
           <v-switch
             v-model="form.estado"

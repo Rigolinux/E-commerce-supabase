@@ -3,10 +3,10 @@ import { supabase } from '../../config/supbaseClient';
 type Product = any;
 
 export default {
+
   data: () => ({
     products: [] as Product[],
-    // loading: false,
-    selection: 1,
+    categoryId: null,
   }),
   methods: {
     Detalles(productId: number) {
@@ -15,11 +15,16 @@ export default {
       })
       // Verificar el mensaje en la consola
       console.log('Parámetro enviado a la otra vista:', productId);
-    }
+    },
   },
 
   async mounted() {
-    const { data, error } = await supabase.from('productos').select('*');
+    // cargar los productos por id_categoria que se recibe por parámetro
+    const categoryId = this.$route.params.id_categoria as any;
+    console.log('categoryId:', categoryId);
+    this.categoryId = categoryId;
+
+    const { data, error } = await supabase.from('productos').select('*').eq('id_categoria', categoryId);
     if (error) {
       console.error('Error fetching products:', error);
     } else {
@@ -28,7 +33,8 @@ export default {
       console.log('Products:', data);
     }
   },
-};
+}
+
 </script>
 
 <template>

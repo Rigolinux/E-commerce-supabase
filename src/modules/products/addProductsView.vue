@@ -5,6 +5,38 @@ import { UploadProductImg } from '../../vueutils/UseBucketProducts';
 import { ref, type Ref } from 'vue';
 import router from '../../router';
 
+// ==================== NUEVO ====================
+
+import { GetIdAndName } from '../../vueutils/useCategories';
+
+let selectedValue2 = ref<number>(0);
+const categoryIDandName = ref<{ id: number; name: string}[]>([]);
+
+const getSelectedValue2 = () => {
+  console.log('selectedValue2: ', selectedValue2.value);
+}
+
+const fetchData = async () => {
+  const data2 = await GetIdAndName();
+
+  data2.sort((a:any, b:any) => a.id_categoria - b.id_categoria);
+
+  categoryIDandName.value = data2.map((item:any) => {
+    return {
+      id: item.id_categoria,
+      name: item.nombre
+    }
+  });
+
+  console.log('Resultado: ', categoryIDandName.value);
+}
+
+fetchData();
+
+// ===============================================
+
+
+
 const { Product:form } = useProducts();
 const url = ref<string | null>(null);
 const image: Ref<Blob | null | File[] | any > = ref(null);
@@ -38,6 +70,8 @@ const CreateProduct = async() => {
   form.value.precio_unitario      = precioUnitario;
   form.value.valor_total_precio   = valorTotalPrecio;
   form.value.valor_stock_promedio = valorStockPromedio;
+
+  form.value.id_categoria = selectedValue2.value;
 
   await InsertData( form.value, 'productos');
   
@@ -115,15 +149,21 @@ const cancelBtn = () => {
 
           <v-text-field v-model="form.descuento" label="Descuento" prefix="$" outlined full-width></v-text-field>
 
-          <v-select
+          <!-- <v-select
             :items="[
-              1, 2, 3
+              1, 2, 3, 4, 5, 6
             ]"
             label="Categoría del producto"
             v-model="form.id_categoria" 
             outlined
             full-width
-          ></v-select>
+          ></v-select> -->
+
+          <select v-model="selectedValue2" class="select_category" @change="getSelectedValue2">
+            <option v-for="item in categoryIDandName" :key="item.id" :value="item.id" class="option_category">
+              {{ `${item.name}` }}
+            </option>
+          </select>
 
           <v-switch
             v-model="form.estado"
@@ -160,4 +200,37 @@ const cancelBtn = () => {
   text-transform: none;
   font-weight: bold;
 }
+
+/* ==================== NUEVO ==================== */
+.select_category {
+  width:    100%;
+  height:   50px;
+  margin:   10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  padding-left: 10px;
+  appearance: none;
+  background-color: white;
+}
+.select_category::after {
+  content: "▼";
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  pointer-events: none;
+  height: 50px;
+}
+.option_category {
+  /* Nuevas confs */
+  padding: 10px 15px;
+  font-size: 18px;
+}
+.option_category:checked {
+  background-color: #ddd;
+}
+/* =============================================== */
+
 </style>

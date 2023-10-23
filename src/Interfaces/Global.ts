@@ -10,22 +10,22 @@ declare interface UserStore {
     role: string | null
 }
 
-declare interface ProductCart {
-    id_producto:            number;
-    id_categoria:           number;
-    nombre:                 string;
-    marca:                  string;
-    stock:                  number;
-    valor_total_precio:     number;
-    precio_unitario:        number;
-    costo:                  number;
-    costo_unitario:         number;
-    descripcion:            string;
-    descuento:              number;
-    estado:                 string;
-    imagen:                 string;
-    cantidad:               number;
-}
+// declare interface ProductCart {
+//     id_producto:            number;
+//     id_categoria:           number;
+//     nombre:                 string;
+//     marca:                  string;
+//     stock:                  number;
+//     valor_total_precio:     number;
+//     precio_unitario:        number;
+//     costo:                  number;
+//     costo_unitario:         number;
+//     descripcion:            string;
+//     descuento:              number;
+//     estado:                 string;
+//     imagen:                 string;
+//     cantidad:               number;
+// }
 
 declare interface SalesHeader {
     id_ventas?:             number;
@@ -80,3 +80,79 @@ declare interface ProductCartView {
     imagen:                 string;
     cantidad:               number;
 }
+
+// Nuevas interfaces agregadas
+
+// Interfaz para la vista productsView, productDetail
+declare interface Product {
+    id_producto:            number;
+    id_categoria:           number;
+    nombre:                 string;
+    marca:                  string;
+    stock:                  number;
+    valor_total_precio:     number;
+    precio_unitario:        number;
+    costo:                  number;
+    valor_stock_promedio:   number;
+    descripcion:            string;
+    descuento:              number;
+    estado:                 boolean;
+    imagen:                 string;
+    cantidad?:              number;
+}
+// Interfaz para la vista addProduct y updateProduct
+declare interface AddProductAndUpdate {
+    id_producto?:           number;
+    id_categoria:           number;
+    nombre:                 string;
+    marca:                  string;
+    stock:                  number;
+    valor_total_precio:     number;
+    precio_unitario:        number;
+    costo:                  number;
+    valor_stock_promedio:   number;
+    descripcion:            string;
+    descuento:              number;
+    estado:                 boolean;
+    imagen:                 string;
+    // cantidad?:              number;
+}
+
+// Interfaz para la vista categoriesView, categoryDetail
+declare interface Categories {
+    id_categoria:           number;
+    nombre:                 string;
+    descripcion:            string;
+    imagen:                 string;
+}
+
+// Interfaz para la vista addCategory y updateCategory
+declare interface AddCategoryAndUpdate {
+    id_categoria?:          number;
+    nombre:                 string;
+    descripcion:            string;
+    imagen:                 string;
+}
+
+declare interface ZZZ {
+    id_categoria:           number | undefined | null;
+    nombre:                 string;
+    descripcion:            string;
+    imagen:                 string;
+}
+
+// declare interface ProductCart {
+//     id_producto:            number;
+//     id_categoria:           number;
+//     nombre:                 string;
+//     marca:                  string;
+//     stock:                  number;
+//     valor_total_precio:     number;
+//     precio_unitario:        number;
+//     costo:                  number;
+//     valor_stock_promedio:   number;
+//     descripcion:            string;
+//     descuento:              number;
+//     estado:                 boolean;
+//     imagen:                 string;
+// }
