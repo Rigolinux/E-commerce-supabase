@@ -1,6 +1,12 @@
 <script lang="ts">
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
 import SidebarLink from './SidebarLink.vue'
+import { supabase } from '../../config/supbaseClient';
+import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { useRouteStore } from '../../stores/RouteStore';
+import { ref } from 'vue';
+
 
 export default {
   name: 'AppSidebar',
@@ -9,21 +15,41 @@ export default {
     SidebarLink
   },
   setup() {
-    return { collapsed, toggleSidebar, sidebarWidth }
+
+    const router = useRouter();
+    const route = useRoute();
+
+    const logout = async() =>{
+      await supabase.auth.signOut()
+      router.push({ 
+        name: 'login' 
+      })
+    }
+
+    const showNavbar = ref(true);
+    const isAuthenticated = ref(false);
+    const Banner = useRouteStore();
+    
+    supabase.auth.onAuthStateChange((_event, session) => {
+      isAuthenticated.value = session !== null;
+      showNavbar.value      = isAuthenticated.value && !route.meta.hideNavbar;
+    })
+
+
+
+    
+    return { collapsed, toggleSidebar, sidebarWidth, logout, isAuthenticated, showNavbar, Banner }
   }
 }
 
 </script>
 
 <template>
-  <div class="sidebar" :style="{ width: sidebarWidth }" >
+  <div class="sidebar" :style="{ width: sidebarWidth }" v-if="isAuthenticated && showNavbar && !Banner.removeNav">
 
     <h1>
-      <!-- span que si esta collapsed desabilita el onclik -->
       <span v-if="collapsed ">
         <center>
-          <!-- <div>V</div>
-          <div>S</div> -->
           <img 
             alt="Vue logo" 
             src="@/assets/logo.svg" 
@@ -54,27 +80,49 @@ export default {
     </h1>
 
     <SidebarLink to="/" class="mdi mdi-home icon">
-      Home 
-    </SidebarLink>
-    <br />
-    <SidebarLink to="/products" class="mdi mdi-shopping icon">
-      Productos 
-    </SidebarLink>
-    <br />
-    <SidebarLink to="/categories" class="mdi mdi-shape icon">
-      Categorias 
-    </SidebarLink>
-    <br />
-    <SidebarLink to="/cart" class="mdi mdi-cart-variant icon">
-      Carrito 
-    </SidebarLink>
-    <br />
-    <SidebarLink to="/logout" class="mdi mdi-logout icon">
-      LogOut 
+      <a class="sidebar-text">
+        Home
+      </a>
     </SidebarLink>
 
-    
+    <br />
+    <SidebarLink to="/products" class="mdi mdi-basket-outline icon">
+      <a class="sidebar-text">
+        Productos
+      </a>
+    </SidebarLink>
+    <br />
+    <SidebarLink to="/listproducts" class="mdi mdi-basket-plus-outline icon">
+      <a class="sidebar-text">
+        Modificar Productos 
+      </a>
+    </SidebarLink>
 
+    <br />
+    <SidebarLink to="/categories" class="mdi mdi-shape-outline icon">
+      <a class="sidebar-text">
+        Categorías        
+      </a>
+    </SidebarLink>
+    <br />
+    <SidebarLink to="/listcategories" class="mdi mdi-shape-plus-outline icon">
+      <a class="sidebar-text">
+        Modificar Categorías 
+      </a>
+    </SidebarLink>
+
+    <br />
+    <SidebarLink to="/cart" class="mdi mdi-cart-variant icon"> 
+      <a class="sidebar-text">
+        Carrito
+      </a>
+    </SidebarLink>
+    <br />
+    <SidebarLink to="/login" class="mdi mdi-logout icon" @click="logout">
+      <a class="sidebar-text">
+        LogOut
+      </a>
+    </SidebarLink>
 
     <span class="collapse-icon" :class="{ 'rotate-180': collapsed }" @click="toggleSidebar">
       <v-icon>mdi-chevron-double-left</v-icon>
@@ -82,8 +130,8 @@ export default {
     </span>
 
     <br />
-
   </div>
+  <!-- <RouterView :showNavbar="showNavbar" /> -->
 </template>
 
 <style>
@@ -113,6 +161,11 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.sidebar-text {
+  color: white;
+  font-size: 20px;
+  padding: 0.75em 0 0.75em;
+}
 .collapse-icon {
   position: absolute;
   bottom: 0;
@@ -128,8 +181,8 @@ export default {
   /* width: 50px;
   height: 50px; */
   /* align-items: center; */
-  font-size: 20px;
+  font-size: 22px;
   /* padding: 0.75em 0 0.75em; */
   /* justify-content: center; */
 }
-</style>./state
+</style>
