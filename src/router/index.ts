@@ -141,7 +141,7 @@ const router = createRouter({
       beforeEnter: isAuthenicated,
       path: '/categories',
       name: 'categories',
-      component: () => import('@/modules/categories/categoriesView.vue')
+      component: () => import('@/modules/categories/CategoriesView.vue')
     },
     // Vista de productos por id de categoria
     {

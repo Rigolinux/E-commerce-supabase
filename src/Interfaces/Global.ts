@@ -141,18 +141,19 @@ declare interface ZZZ {
     imagen:                 string;
 }
 
-// declare interface ProductCart {
-//     id_producto:            number;
-//     id_categoria:           number;
-//     nombre:                 string;
-//     marca:                  string;
-//     stock:                  number;
-//     valor_total_precio:     number;
-//     precio_unitario:        number;
-//     costo:                  number;
-//     valor_stock_promedio:   number;
-//     descripcion:            string;
-//     descuento:              number;
-//     estado:                 boolean;
-//     imagen:                 string;
-// }
+declare interface ProductCart {
+    id_producto:            number;
+    id_categoria:           number;
+    nombre:                 string;
+    marca:                  string;
+    stock:                  number;
+    valor_total_precio:     number;
+    precio_unitario:        number;
+    costo:                  number;
+    valor_stock_promedio:   number;
+    descripcion:            string;
+    descuento:              number;
+    estado:                 boolean;
+    imagen:                 string;
+    cantidad?:              number;
+}

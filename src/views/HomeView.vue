@@ -12,7 +12,7 @@ const genPurchase = async() => {
     let sum:number = 0;
 
     products.forEach((product) => {
-      sum += product.cantidad * product.costo
+      sum += product.cantidad? product.cantidad * product.costo : 0;
     });
 
     sum = parseFloat(sum.toFixed(2));
@@ -40,7 +40,7 @@ const genPurchase = async() => {
           nombre: product.nombre,
           subtotal: product.costo,
           descuento: 0,
-          total: product.cantidad * product.costo
+          total: product.cantidad? product.cantidad * product.costo : 0,
         }
         ArrayProducts.push(productDb);
       });
