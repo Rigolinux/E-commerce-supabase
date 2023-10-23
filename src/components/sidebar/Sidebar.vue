@@ -30,6 +30,7 @@ export default {
     const isAuthenticated = ref(false);
     const Banner = useRouteStore();
     
+     supabase.auth.getSession();
     supabase.auth.onAuthStateChange((_event, session) => {
       isAuthenticated.value = session !== null;
       showNavbar.value      = isAuthenticated.value && !route.meta.hideNavbar;
@@ -37,15 +38,24 @@ export default {
 
     // Verificando el nivel de acceso del usuario
     const isAdmin = ref(false);
+  
 
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      if(session) {
-        const resp = await supabase.rpc('get_claims', { uid: session.user.id });
-        isAdmin.value = resp.data && resp.data.Adminlevel;
-      } else {
-        isAdmin.value = false;
-      }
-    })
+    const checkUser = async () =>{
+      await supabase.auth.getSession();
+
+      const {data} = await supabase.auth.getUser()
+      const id = data.user?.id
+        const resp = await supabase.rpc('get_claims', {uid: id });
+
+         if(resp.data.Adminlevel)
+          isAdmin.value = resp.data.Adminlevel;
+        else
+          isAdmin.value = false;
+      
+        
+    } 
+   
+    checkUser();
     
     return { collapsed, toggleSidebar, sidebarWidth, logout, isAuthenticated, showNavbar, Banner, isAdmin }
   }
