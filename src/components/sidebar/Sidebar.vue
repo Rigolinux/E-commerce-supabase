@@ -35,10 +35,19 @@ export default {
       showNavbar.value      = isAuthenticated.value && !route.meta.hideNavbar;
     })
 
+    // Verificando el nivel de acceso del usuario
+    const isAdmin = ref(false);
 
-
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if(session) {
+        const resp = await supabase.rpc('get_claims', { uid: session.user.id });
+        isAdmin.value = resp.data && resp.data.Adminlevel;
+      } else {
+        isAdmin.value = false;
+      }
+    })
     
-    return { collapsed, toggleSidebar, sidebarWidth, logout, isAuthenticated, showNavbar, Banner }
+    return { collapsed, toggleSidebar, sidebarWidth, logout, isAuthenticated, showNavbar, Banner, isAdmin }
   }
 }
 
@@ -91,8 +100,9 @@ export default {
         Productos
       </a>
     </SidebarLink>
-    <br />
-    <SidebarLink to="/listproducts" class="mdi mdi-basket-plus-outline icon">
+
+    <br v-if="isAdmin" />
+    <SidebarLink v-if="isAdmin" to="/listproducts" class="mdi mdi-basket-plus-outline icon">
       <a class="sidebar-text">
         Modificar Productos 
       </a>
@@ -104,8 +114,9 @@ export default {
         Categorías        
       </a>
     </SidebarLink>
-    <br />
-    <SidebarLink to="/listcategories" class="mdi mdi-shape-plus-outline icon">
+
+    <br v-if="isAdmin" />
+    <SidebarLink v-if="isAdmin" to="/listcategories" class="mdi mdi-shape-plus-outline icon">
       <a class="sidebar-text">
         Modificar Categorías 
       </a>
@@ -117,6 +128,7 @@ export default {
         Carrito
       </a>
     </SidebarLink>
+    
     <br />
     <SidebarLink to="/login" class="mdi mdi-logout icon" @click="logout">
       <a class="sidebar-text">
