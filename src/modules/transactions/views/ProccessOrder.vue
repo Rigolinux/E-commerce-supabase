@@ -1,28 +1,32 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute,useRouter } from 'vue-router';
 import { UsePayment } from '@/composables/usePayment';
 
 const { ProccessPayment } = UsePayment();
 const route = useRoute();
+const router = useRouter();
 
 console.log(route.query);
 
 const makePayment = async() => {
     
-     ProccessPayment(route.query);
-   
+    await ProccessPayment(route.query);
+    
+    router.push({ 
+        name: 'home' 
+    })
 }
+
+makePayment();
 
 </script>
 
 
 <template>
     <div>
-        <h1>Processing Orders</h1>
+        <h1>Estamos Procesando su orden</h1>
     </div>
-    <div>
-        <v-btn @click="makePayment">Proccess Payment</v-btn>
-    </div>
+    
 </template>
 
 

@@ -10,7 +10,6 @@ import { ref } from 'vue';
 
 export default {
   name: 'AppSidebar',
-  props: {},
   components: {
     SidebarLink
   },

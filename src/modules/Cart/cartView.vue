@@ -81,9 +81,11 @@ export default {
 
       
 
-        const response = await axios(config);
-        console.log('response:', response.data);
+        const {data} = await axios(config);
 
+    
+        window.open(data.message.links[1].href, '_blank');
+        
       } catch (error) {
         console.log('error:', error);
         
@@ -117,6 +119,7 @@ export default {
       
 
         const response = await axios(config);
+        window.open(response.data.urlEnlace, '_blank');
         console.log('response:', response.data);
 
       } catch (error) {
