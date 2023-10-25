@@ -12,6 +12,8 @@ export const useInvoices = () => {
 
     const Categories = ref<any[]>([]);
 
+    const Saleschart = ref<any[]>([]);
+
     async function GetInvoicesData() {
         try {
             const dataDet: ProductCart[]  = await GetData('detalle_venta') || [];
@@ -23,11 +25,42 @@ export const useInvoices = () => {
             InvoicesDetails.value = dataDet;
             Categories.value = dataCategories;
             Users.value = dataUsers;
+            Saleschart.value =  topSales();
         } catch (error: any) {
             alert(error.message);
         }
     }
-
+    const topSales = () => {
+        const products: any[] = [];
+      
+        const data = InvoicesDetails.value;
+        data.forEach((product) => {
+          const index = products.findIndex((item) => item.id_productos === product.id_productos);
+          if (index === -1) {
+            products.push({
+              id_productos: product.id_productos,
+              nombre: product.nombre,
+              cantidad: product.cantidad,
+            });
+          } else {
+            products[index].cantidad += product.cantidad;
+          }
+        });
+      
+        // Sort the products by quantity in descending order
+        products.sort((a, b) => b.cantidad - a.cantidad);
+      
+        // Get the top 10 products by quantity
+        const topProducts = products.slice(0, 10);
+      
+        // Map the products to the format required by the sales chart
+        const chartData = topProducts.map((product) => ({
+            arg: product.nombre,
+            val: product.cantidad,
+        }));
+      
+        return chartData;
+      };
 
 
 
@@ -37,6 +70,9 @@ export const useInvoices = () => {
         InvoicesDetails,
         Users,
         Categories,
+
+        // Charts
+        Saleschart,
 
         // Methods
         GetInvoicesData,
