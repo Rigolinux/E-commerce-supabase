@@ -3,71 +3,41 @@ import { InsertData } from '@/vueutils/UseTables';
 import TheWelcome from '../components/TheWelcome.vue'
 
 import ChartViews from '@/modules/Reports/views/ChartsViews.vue'
+import { ref } from 'vue';
+import { useInvoices } from '@/composables/useInvoices';
 
 
-const genPurchase = async() => {
-  const products:ProductCart[] =  JSON.parse(localStorage.getItem('product-cart') || '[]');
+const {Categories, GetInvoicesData,InvoicesDetails,InvoicesHeaders, Users, Saleschart} = useInvoices();
 
-  if (products.length > 0) {
-    let sum:number = 0;
+const loading = ref(true);
 
-    products.forEach((product) => {
-      sum += product.cantidad? product.cantidad * product.costo : 0;
-    });
+GetInvoicesData().then(()=>{
+  loading.value = false;
+})
 
-    sum = parseFloat(sum.toFixed(2));
-    
-    const purchaseH: SalesHeader = {
-    total:                sum,
-    descuento:             0,
-    id_perfil:             1,
 
-    estado:                'Completo',
-    referencia:            'trs 1',
-    metodo_de_pago:        'Efectivo',
-    }
-
-    const data = await InsertData(purchaseH, 'ventas');
-    
-    if(data){
-      const purcharseHDB: SalesHeader = data[0];
-      let ArrayProducts: ProductCart[] = [];
-      products.forEach((product) => {
-        const productDb: any = {
-          id_ventas: purcharseHDB.id_ventas,
-          cantidad: product.cantidad, 
-          id_productos: product.id_producto,
-          nombre: product.nombre,
-          subtotal: product.costo,
-          descuento: 0,
-          total: product.cantidad? product.cantidad * product.costo : 0,
-        }
-        ArrayProducts.push(productDb);
-      });
-
-      const data2 = await InsertData(ArrayProducts, 'detalle_venta');
-
-      console.log(data2);
-    }
-    //renombrar sub total - costo o precio
-    //borrar trnasaccion
-    //borrar localstorage
-  } 
-}
 
 
 </script>
 
 <template>
   <main>
-    <v-btn
-      @click.prevent="genPurchase"
+  
+    <div
+    v-if="loading"
     >
-      Generate a purcharse
-    </v-btn>
+      Cargando ...
+    </div>
 
 
-      <ChartViews />
+      <template
+      v-if="!loading"
+      >
+        <ChartViews
+        
+        />
+      </template>
    
+      
   </main>
 </template>

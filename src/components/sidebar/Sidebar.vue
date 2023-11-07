@@ -150,7 +150,7 @@ export default {
       <i class="fas fa-angle-double-left" />
     </span>
 
-    <br />
+    
   </div>
   <!-- <RouterView :showNavbar="showNavbar" /> -->
 </template>

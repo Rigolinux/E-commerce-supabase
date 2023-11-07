@@ -142,6 +142,7 @@ declare interface ZZZ {
 }
 
 declare interface ProductCart {
+    id_productos?:         number;
     id_producto:            number;
     id_categoria:           number;
     nombre:                 string;
