@@ -1,93 +1,151 @@
 <script setup lang="ts">
-import { handlePasswordReset } from '@/vueutils/UseAuth';
-import {ref} from 'vue';
-
-const form = ref<Credentials>({email: '', password: ''});
-
+import { handlePasswordReset } from '../../../vueutils/UseAuth';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 
+const router = useRouter();
 const email = ref<string>('');
 
+const form = ref<Credentials>({
+  email: '',
+  password: ''
+});
+
 const submitForgotPassword = async () => {
-    try{
-        await handlePasswordReset(email.value);
-        console.log('Solicitud de recuperación de contraseña exitosa');
-        // router.push('/reset-password');
-
-        // const token = router.currentRoute.value.params.token;
-        // const accessToken = router.currentRoute.value.params.access_token;
-        // router.push(`/reset-password?access_token=${accessToken}`);
-        router.push('/login');
-
-    } catch (error) {
-        console.log('Error al solicitar la recuperación de contraseña: ', error);
-        alert('Error al solicitar la recuperación de contraseña');
+  console.log('Solicitud de recuperación de contraseña');
+  try{
+    if (email.value == '') {
+      alert('Por favor, ingresa tu correo electrónico.');
+      return;
     }
+    await handlePasswordReset(email.value);
+    console.log('Solicitud de recuperación de contraseña exitosa');
+    router.push('/login');
+  } catch (error) {
+    console.log('Error al solicitar la recuperación de contraseña: ', error);
+    alert('Error al solicitar la recuperación de contraseña');
+  }
 };
-
 </script>
+
 <template>
-    <v-container class="text-center d-flex">
-        <v-row>
-            <v-col class="border">
-                <form @submit.prevent="submitForgotPassword">
+  <div class="register-container">
+    <v-row justify="center" align-content="center" class="fill-height">
+      <v-col cols="12" md="6" lg="4">
+        <form @submit.prevent="submitForgotPassword">
+          <div class="register-box">
+            
+            <v-row justify="center">
+              <v-icon size="200px" class="gradient-icon-color mx-auto">
+                mdi-account-edit
+              </v-icon>
+            </v-row>
+            
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="email"
+                  label="Correo Electrónico"
+                  prepend-inner-icon="mdi-email"
+                  type="email"
+                  outlined
+                />
+              </v-col>
+            </v-row>
+            
+            <v-row>
+              <v-col class="text-center">
+                <v-btn class="gradient-btn" large type="submit">
+                  Recuperar mi contraseña
+                </v-btn>
+              </v-col>
+            </v-row>
+            
+            <br /> <br />
 
-                    <v-icon size="150px" class="mx-auto"> 
-                        mdi-account-edit
-                    </v-icon>
+            <v-row class="text-links-row">
+              <v-col class="text-caption text-center mt-3 mt-md-0">
+                <a class="text">
+                  ¿Ya tienes una cuenta?
+                </a>
+                <router-link to="/login" class="gradient-text">
+                  Iniciar Sesión
+                </router-link>
+              </v-col>
+            </v-row>
 
-                    <v-text-field
-                        v-model="email"
-                        label="Correo Electronico" 
-                        prepend-icon="mdi-email"
-                        type="email"
-                        class="mx-auto max-w-[400px]"
-                    />
-
-                    <v-btn type="submit" class="routerlink">
-                        Recuperar mi contraseña
-                    </v-btn>
-
-                </form>
-
-                <p style="margin-top: 30px;">
-                    ¿Ya tienes una cuenta?
-                    <router-link to="/login">
-                        Iniciar Sesion
-                    </router-link>
-                </p>
-
-            </v-col>
-        </v-row>
-    </v-container>
-
-    <!-- <div class="ml-2">
-        <h1>Register</h1>
-        <form @submit.prevent="handleSignup(form)">
-            <v-text-field  v-model="form.email" label="email" variant="underlined" 
-                prepend-icon="mdi-email" type="email"
-            />
-            <v-text-field  variant="underlined" v-model="form.password" label="password"
-                prepend-icon="mdi-lock" type="password"
-            />
-            <v-btn type="submit">Register</v-btn>
+          </div>
         </form>
-    </div> -->
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <style scoped>
-
-.routerlink {
-    color: black;
-    background-color: rgb(0, 189, 126);
-    block-size: 36px;
-    max-width: 400px;
-    border-radius: 6px;
-    margin: 0 auto;
-    align-items: center;
-    display: flex;
-    justify-content: center;
+.register-container {
+  background: linear-gradient(to right, #170734, #062920);
+  height: 100vh;
 }
-
+.register-box {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  color: #ffff;
+  border: 1px solid;
+  border-image-source: linear-gradient(to right, #7E25F1, #32E2A4);
+  border-image-slice: 1;
+  opacity: 0.8;
+}
+.gradient-icon-color {
+  background: linear-gradient(to right, #7E25F1, #32E2A4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.login-box .v-input__icon--append-inner .v-icon {
+  color: white !important;
+  visibility: visible !important;
+  background-color: red;
+}
+.custom-eye-icon {
+  color: white !important;
+  cursor: pointer;
+}
+.gradient-btn {
+  background: linear-gradient(to right, #7E25F1, #32E2A4);
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: none;
+  width: 80%;
+}
+.gradient-btn:hover {
+  opacity: 0.9;
+}
+@media (min-width: 600px) {
+  .gradient-btn {
+    width: 80%;
+  }
+  .text-links-row {
+    flex-direction: column;
+  }
+}
+.text {
+  color: white;
+  font-size: 14px;
+}
+.gradient-text {
+    background: linear-gradient(to right, #4877CA, #32E2A4);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+.gradient-text:hover {
+    text-decoration: underline;
+}
 </style>
