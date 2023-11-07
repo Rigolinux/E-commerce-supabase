@@ -5,31 +5,30 @@ import { supabase } from '../../config/supbaseClient';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useRouteStore } from '../../stores/RouteStore';
-import { ref } from 'vue';
+import { ref, watch, defineComponent } from 'vue';
 
-
-export default {
+export default defineComponent({
   name: 'AppSidebar',
   components: {
     SidebarLink
   },
-  setup() {
-
+  setup(props, { emit }) {
     const router = useRouter();
     const route = useRoute();
-
+    
     const logout = async() =>{
       await supabase.auth.signOut()
-      router.push({ 
-        name: 'login' 
-      })
+      // router.push({ 
+      //   name: 'login' 
+      // })
+      router.push('/login')
     }
 
     const showNavbar = ref(true);
     const isAuthenticated = ref(false);
     const Banner = useRouteStore();
     
-     supabase.auth.getSession();
+    supabase.auth.getSession();
     supabase.auth.onAuthStateChange((_event, session) => {
       isAuthenticated.value = session !== null;
       showNavbar.value      = isAuthenticated.value && !route.meta.hideNavbar;
@@ -37,28 +36,30 @@ export default {
 
     // Verificando el nivel de acceso del usuario
     const isAdmin = ref(false);
-  
-
+    
     const checkUser = async () =>{
       await supabase.auth.getSession();
-
+      
       const {data} = await supabase.auth.getUser()
       const id = data.user?.id
-        const resp = await supabase.rpc('get_claims', {uid: id });
-
-         if(resp.data.Adminlevel)
-          isAdmin.value = resp.data.Adminlevel;
-        else
-          isAdmin.value = false;
+      const resp = await supabase.rpc('get_claims', {uid: id });
       
-        
-    } 
-   
+      if(resp.data.Adminlevel)
+        isAdmin.value = resp.data.Adminlevel;
+      else
+      isAdmin.value = false;
+    }
     checkUser();
-    
+
+    watch([isAuthenticated, showNavbar], () => {
+      const isVisible = isAuthenticated.value && showNavbar.value && !Banner.removeNav;
+      // Emitir el evento al componente padre
+      emit('sidebar-visibility', isVisible);
+    });
+
     return { collapsed, toggleSidebar, sidebarWidth, logout, isAuthenticated, showNavbar, Banner, isAdmin }
   }
-}
+});
 
 </script>
 
